@@ -1,0 +1,116 @@
+\documentclass[oneside]{scrbook}
+\KOMAoptions{
+  paper=letter,
+  fontsize=12pt,
+  parskip=full,
+  headings=small,
+}
+
+\usepackage{import}
+\usepackage{tikz}
+
+\usetikzlibrary{arrows.meta, positioning, calc}
+
+\usepackage[mode=tex]{standalone}
+
+\usepackage{amsmath, amssymb, amsthm}
+
+\usepackage{booktabs}
+
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+
+\usepackage{fmtcount}
+
+\usepackage{microtype}
+
+\usepackage{pgffor}
+
+\usepackage{xcolor}
+\usepackage[colorlinks, allcolors=blue!50!black]{hyperref}
+
+\usepackage{cleveref}
+
+\usepackage{enumitem}
+\setlist{nosep}
+
+\pagestyle{plain}
+
+\usepackage[backend=biber, style=alphabetic]{biblatex}
+\addbibresource{references.bib}
+
+\usepackage[en-CA]{datetime2}
+
+\newcommand{\lecture}[3]{
+    \clearpage
+    \phantomsection
+    \noindent
+    \Ordinalstringnum{#1} Lecture \hfill \DTMdate{#2}\\[0.5em]
+    {\Large \textsf{\textbf{#3}}}
+    \par\vspace{0.5em}
+    \hrule
+    \vspace{1em}
+    \addcontentsline{toc}{chapter}{\texorpdfstring{\Ordinalstringnum{#1} Lecture}{Lecture #1}: #3 (\texorpdfstring{\DTMdate{#2}}{#2})}
+    \stepcounter{chapter}
+    \setcounter{chapter}{#1}
+}
+
+\title{Notes for Asymptotic Enumeration}
+\author{Guilherme Zeus Dantas e Moura}
+\date{Fall 2026}
+
+\begin{document}
+
+\maketitle
+
+This document contains my lecture notes for CO 730,
+a graduate course on Asymptotic Enumeration,
+taught by Stephen Melczer at the University of Waterloo in the Fall 2026 term.
+Any errors, inaccuracies, or misinterpretations are my own.
+Use these notes at your own discretion,
+and please feel free to point out any corrections that may be needed.
+
+% Information about the course can be found at \href{https://outline.uwaterloo.ca/viewer/view/nr6qmy}{University of Waterloo's outline portal}.
+
+Here's the course description from the outline, by Stephen Melczer:
+\begin{quote}
+    This course presents an introduction to the theory of analytic combinatorics in one and several variables, and computational techniques for enumeration. Topics will be tailored to student interest, and could include computer algebra tools for sequences and generating functions; diagonals of multivariate generating functions; data structures for enumeration; effective analytic methods for asymptotics; limit theorems of combinatorial objects; algorithmic transcendence proofs and transcendence of constants vs functions; polynomial amoebas and convergent series expansions; computability and complexity questions in enumeration and connections to formal languages; topological methods for asymptotics.
+\end{quote}
+
+The tentative class plan is to cover:
+\begin{description}
+    \item[Topic 1:] Basics of Enumeration
+    \item[Topic 2:] Basics of Analytic Combinatorics
+    \item[Topic 3:] Saddle-point Asymptotics
+    \item[Topic 4:] Diagonals and Alternative Representations
+    \item[Topic 5:] D-finite Asymptotics
+    \item[Topic 6:] Multivariate Asymptotics
+\end{description}
+Applications of these techniques will be presented throughout the semester.
+
+% The assessments for this course consist of two assignments (worth 20\% each, submitted on Crowdmark) and a final project consisting of an oral presentation (30\%) and a written report (30\%, due December 15).
+
+The main references for the course are the following textbooks and notes (with free manuscripts available online):
+\cite{MelczerNotes},
+\cite{Melczer2021},
+\cite{PemantleWilsonMelczer2024}, and
+\cite{FlajoletSedgewick2009}.
+
+\tableofcontents
+
+\foreach \i in {01, 02, 03, 04, 05, 06, 07, 08, 09, 10, ..., 99} {%
+    \edef\FileName{lectures/\i.tex}%
+    \IfFileExists{\FileName}{%
+      \input{\FileName}%
+    }%
+  }
+
+\printbibliography
+
+\end{document}
