@@ -1,0 +1,155 @@
+\lecture{2}{2026-09-16}{}
+
+Previously, we saw:
+\begin{itemize}
+    \item \((\mathcal{C}, |\cdot|)\) denotes a combinatorial class.
+    \item \(\mathcal{C}_n\) denotes the set of objects of weight \(n\).
+    \item \(c_n = |\mathcal{C}_n|\) denotes the counting sequence.
+    \item \(C(z) = \sum_{n\ge 0} c_n z^n\) denotes the generating function.
+\end{itemize}
+
+This notation is quite useful: the combinatorial class in script uppercase, the counting sequence in lowercase, and the generating function in uppercase.
+
+We also saw constructions:
+\begin{itemize}
+    \item The neutral class \(\mathcal{E}\) and the atomic class \(\mathcal{Z}\).
+    \item \(\mathcal{C} = \mathcal{A} + \mathcal{B}\) with \(C(z) = A(z) + B(z)\).
+    \item \(\mathcal{C} = \mathcal{A} \times \mathcal{B}\) with \(C(z) = A(z)B(z)\).
+    \item \(\mathcal{C} = \operatorname{SEQ}(\mathcal{A})\) with \(C(z) = 1/(1-A(z))\).
+\end{itemize}
+Note that, from these starting points, the generating function we obtain is always rational, i.e., a ratio of two polynomials.
+
+\begin{example}[Rooted planar binary trees]
+    A \emph{rooted planar binary tree} is a rooted tree where each node has a left child and a right child, which may be empty.
+    Consider the combinatorial class \(\mathcal{B}\) of rooted planar binary trees, with weight function \(|\cdot|\) being the number of nodes in the tree.
+    We can write a recursive decomposition of a rooted planar binary tree as
+    \[
+        \mathcal{B} = \mathcal{E} + \mathcal{Z} \times \mathcal{B} \times \mathcal{B},
+    \]
+    where the first term corresponds to the tree with no nodes, and the second term corresponds to a tree with a root node and two subtrees.
+    Then we can write the generating function as
+    \[
+        B(z) = 1 + z \cdot B(z)^2.
+    \]
+
+    The two solutions to this quadratic equation are
+    \begin{align*}
+        \frac{1 - \sqrt{1-4z}}{2z} &= 1 + z + 2z^2 + 5z^3 + 14z^4 + 42z^5 + \dots,\\
+        \frac{1 + \sqrt{1-4z}}{2z} &= z^{-1} + 1 + z + 2z^2 + 5z^3 + 14z^4 + 42z^5 + \dots.
+    \end{align*}
+    We rule out the second solution because it is not a formal power series (it has a negative power of \(z\)).
+    Therefore,
+    \[
+        B(z) = \frac{1 - \sqrt{1-4z}}{2z} = 1 + z + 2z^2 + 5z^3 + 14z^4 + 42z^5 + \dots.
+    \]
+
+    From this, we can use the generalized binomial theorem to find a closed form for the counting sequence:
+    \begin{align*}
+        b_n = [z^n]B(z) = [z^n]\frac{1 - \sqrt{1-4z}}{2z} = \frac{1}{2} [z^{n-1}] (1-4z)^{1/2} = \frac{1}{n+1} \binom{2n}{n}.
+    \end{align*}
+\end{example}
+
+The generalized binomial theorem is nice, though a bit clunky.
+A more general tool is LIFT, which finds the coefficients for a power series \(F\) satisfying \(F = z \Phi(F)\) in terms of \(\Phi\).
+
+\begin{example}[Quinary trees]
+    Quinary (or \(5\)-ary) trees are rooted trees where each node has a first, second, third, fourth, and fifth child, each of which may be empty.
+    Its generating function \(Q(z)\) satisfies the functional equation
+    \[ Q(z) = 1 + z Q(z)^5. \]
+    However, \(Q(z)\) is not solvable in terms of radicals, so we cannot use the generalized binomial theorem to find a closed form for the counting sequence.
+    We need \emph{implicit methods}.
+\end{example}
+
+\section*{Parameters}
+
+We'll stick with one-dimensional parameters for now, but the theory generalizes to multi-dimensional parameters.
+We could also generalize to parameters taking values in \(\mathbb{Z}\), but we won't do that here.
+
+A \emph{parameter} in a combinatorial class is a function \(\chi: \mathcal{C} \to \mathbb{N}\) that assigns a non-negative integer to each object in the class.
+
+Unlike the weight function, we do not require that the number of objects of a given parameter value is finite.
+
+The \emph{bivariate generating function} of a class with parameters \((\mathcal{C}, |\cdot|, \chi)\) is the series
+\[
+    C(z, u) = \sum_{\sigma \in \mathcal{C}} z^{|\sigma|} u^{\chi(\sigma)} = \sum_{n \geq 0} \left( \sum_{k \geq 0} c_{n,k} u^k \right) z^n,
+\]
+where \(c_{n,k} = |\mathcal{C}_{n,k}|\) and \(\mathcal{C}_{n,k} = \{\sigma \in \mathcal{C}: |\sigma| = n, \chi(\sigma) = k\}\).
+
+In general, this is a formal power series in \(z\) with coefficients that are polynomials in \(u\).
+
+\begin{example}[Binary strings parameterized by number of zeroes]
+    Let \(\mathcal{B}\) be the combinatorial class of binary strings, with weight function \(|\cdot|\) being the length of the string, and parameter \(\chi\) being the number of zeroes in the string.
+    Then the bivariate generating function is
+    \[
+        B(u, z) = \sum_{n \geq 0} \left( \sum_{k \geq 0} b_{n,k} u^k \right) z^n = \sum_{n \geq 0} (1+u)^n z^n = \frac{1}{1-(1+u)z}.
+    \]
+
+    Note that setting \(u = 1\) recovers the univariate generating function \(B(1, z) = 1/(1-2z)\), since the coefficient of \(z^n\) in \(B(z,1)\) is \(\sum_{k\ge 0} b_{n,k} = b_n\).
+    Moreover, setting \(u = 0\) gives the generating function for the object whose parameter is \(0\), i.e., the generating function for binary strings with no zeroes, which is \(B(0, z) = 1/(1-z)\).
+\end{example}
+
+For parametrized constructions, add a new base class \(\mu\) with one object of weight \(0\) and parameter \(1\).
+
+\begin{example}[Binary strings parameterized by number of zeroes, continued]
+    Let \(\mathcal{B}\) be the combinatorial class of binary strings, with weight function \(|\cdot|\) being the length of the string, and parameter \(\chi\) being the number of zeroes in the string.
+    We can write a recursive decomposition of a binary string as
+    \[
+        \mathcal{B} = \operatorname{SEQ}(\mathcal{Z}_0 + \mathcal{Z}_1),
+    \]
+    where \(\mathcal{Z}_0\) is the atomic class of zeroes and \(\mathcal{Z}_1\) is the atomic class of ones.
+    Then we can write the bivariate generating function as
+    \[
+        B(z, u) = \frac{1}{1-(Z_0(z,u)+Z_1(z,u))} = \frac{1}{1-(uz+z)} = \frac{1}{1-(1+u)z}.
+    \]
+\end{example}
+
+\begin{example}[Rooted planar binary trees parameterized by number of leaves]
+    Let \(\mathcal{B}\) be the combinatorial class of rooted planar binary trees, with weight function \(|\cdot|\) being the number of nodes in the tree, and parameter \(\chi\) being the number of leaves in the tree.
+
+    The original recursive decomposition of a rooted planar binary tree was
+    \[
+        \mathcal{B} = \mathcal{E} + \mathcal{Z} \times \mathcal{B} \times \mathcal{B},
+    \]
+    but it's not clear how to count the number of leaves in this decomposition.
+    We have to massage this decomposition into a form that makes it easier to count the number of leaves.
+
+    Let \(\mathcal{N}\) be the class of non-empty rooted planar binary trees, i.e., \(\mathcal{N} = \mathcal{B} - \mathcal{E}\).
+    A description of the class \(\mathcal{N}\) is
+    \[
+        \mathcal{N} = \mathcal{Z} + \mathcal{Z} \times \mathcal{E} \times \mathcal{N} + \mathcal{Z} \times \mathcal{N} \times \mathcal{E} + \mathcal{Z} \times \mathcal{N} \times \mathcal{N},
+    \]
+    where the first term corresponds to a tree where the root's children are both empty, the second term corresponds to a tree where the root's left child is empty and the right child is non-empty, the third term corresponds to a tree where the root's left child is non-empty and the right child is empty, and the fourth term corresponds to a tree where both children are non-empty.
+
+    Then, it's clear that the first term corresponds to leafs.
+    Therefore, a description of the parameterized class \((\mathcal{N}, |\cdot|, \chi)\) is
+    \[
+        \mathcal{N} = \mathcal{Z} \times \mu + \mathcal{Z} \times \mu \times \mathcal{N} + \mathcal{Z} \times \mathcal{N} \times \mu + \mathcal{Z} \times \mathcal{N} \times \mathcal{N}.
+    \]
+    Thus, its bivariate generating function satisfies
+    \[
+        N(z, u) = zu + zuN(z, u) + zuN(z, u) + zN(z, u)^2 = zu + 2zuN(z, u) + zN(z, u)^2.
+    \]
+    This is a quadratic equation in \(N(z, u)\), so we can solve it to find
+    \begin{align*}
+        N(z, u) = \frac{1 - 2uz - \sqrt{1 - 4z - 4uz + 4z^2}}{2z}
+        = u + (2u + 1)z + (5u^2 + 4u + 1)z^2 + (14u^3 + 14u^2 + 6u + 1)z^3 + \dots.
+    \end{align*}
+\end{example}
+
+\section{Expected values of parameters}
+
+Recall
+\[
+    C(u, z) = \sum_{n \geq 0} \left( \sum_{k \geq 0} c_{n,k} u^k \right) z^n.
+\]
+Thus, its derivative with respect to \(u\) is
+\[
+    C_u(u, z) = \sum_{n \geq 0} \left( \sum_{k \geq 0} k c_{n,k} u^{k-1} \right) z^n.
+\]
+
+The \emph{expected value} of a parameter \(\chi\) in a combinatorial class \((\mathcal{C}, |\cdot|, \chi)\) is the average value of the parameter over all objects of a given weight \(n\):
+\begin{align*}
+    \mathbb{E}[\chi_n] &= \sum_{k \geq 0} k \cdot \frac{c_{n,k}}{c_n} \\
+    &= \frac{1}{c_n} \sum_{k \geq 0} k c_{n,k} \\
+    &= \frac{[z^n] C_u(1, z)}{[z^n] C(1, z)}.
+\end{align*}
