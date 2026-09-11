@@ -1,71 +1,86 @@
-\lecture{1}{2026-09-09}{Finding generating functions combinatorially}
+\lecture{1}{2026-09-09}{Combinatorial constructions}
 
-A \emph{combinatorial class} is a set \(\mathcal{C}\) with a \emph{weight function} \(|\cdot|\colon \mathcal{C}\to \mathbb{N}\) such that for each \(n\in \mathbb{N}\), the set \(\mathcal{C}_n=\{c\in \mathcal{C}:|c|=n\}\) is finite.
+\begin{definition}[Combinatorial class]
+A \emph{combinatorial class} is a pair \((\mathcal{C}, |\cdot|)\) where \(\mathcal{C}\) is a set and \(|\cdot|\colon \mathcal{C}\to \mathbb{N}\) is a \emph{weight function} such that for each \(n\in \mathbb{N}\), the set
+\[
+    \mathcal{C}_n = \{c\in \mathcal{C} : |c|=n\}
+\]
+is finite.
+The sequence \(c_n = |\mathcal{C}_n|\) for \(n \ge 0\) is the \emph{counting sequence} of \(\mathcal{C}\).
+\end{definition}
 
-\begin{example}[Binary strings]
-The set \(\mathcal{C} = \{\varepsilon, 0, 1, 00, 01, 10, 11, 000, \dots\}\) of all binary strings with the weight function \(|\cdot|\) being the length of the string is a combinatorial class.
-However, the same set with the weight function \(|\cdot|\) being the number of zeroes in the string is not a combinatorial class, since \(\mathcal{C}_0 = \{\varepsilon, 1, 11, 111, \dots\}\) is infinite.
-\end{example}
-
-The \emph{counting sequence} of a combinatorial class \(\mathcal{C}\) is the sequence \((c_n)_{n\ge 0}\) where \(c_n = |\mathcal{C}_n|\).
-The \emph{generating function} of a combinatorial class \(\mathcal{C}\) is the series
+\begin{definition}[Generating function]
+The \emph{generating function} of a combinatorial class \(\mathcal{C}\) is the formal power series
 \[
     C(z) = \sum_{n\ge 0} c_n z^n = \sum_{c\in \mathcal{C}} z^{|c|}.
 \]
-In general, it is a formal power series.
+\end{definition}
 
-\begin{example}[Binary strings, continued]
-For example, the counting sequence of the combinatorial class of binary strings is \(c_n = 2^n\), and its generating function is
+\begin{example}[Binary strings]
+The set \(\mathcal{C} = \{\varepsilon, 0, 1, 00, 01, 10, 11, 000, \dots\}\) of all binary strings with the weight function \(|\cdot|\) being the length of the string is a combinatorial class with \(c_n = 2^n\). Its generating function is
 \[
-    C(z) = \sum_{n\ge 0} 2^n z^n = \sum_{n\ge 0} (2z)^n = \frac{1}{1-2z}.
+    C(z) = \sum_{n\ge 0} 2^n z^n = \frac{1}{1-2z}.
+\]
+However, the same set with weight function being the number of zeroes is not a combinatorial class, since \(\mathcal{C}_0 = \{\varepsilon, 1, 11, 111, \dots\}\) is infinite.
+\end{example}
+
+\section*{Combinatorial constructions}
+
+To build generating functions without first calculating counting sequences, we define combinatorial operations on classes that translate directly into algebraic operations on their generating functions.
+
+\subsection*{Base classes}
+\begin{description}
+    \item[Neutral class \(\mathcal{E}\):] \(\mathcal{E} = \{\varepsilon\}\) contains one object of size \(0\). Generating function: \(E(z) = 1\).
+    \item[Atomic class \(\mathcal{Z}\):] \(\mathcal{Z} = \{\bullet\}\) contains one object of size \(1\). Generating function: \(Z(z) = z\).
+\end{description}
+
+\subsection*{Basic constructions}
+Let \(\mathcal{A}\) and \(\mathcal{B}\) be combinatorial classes with generating functions \(A(z)\) and \(B(z)\).
+\begin{description}
+    \item[Sum (\(\mathcal{A} + \mathcal{B}\)):]
+    The disjoint union of \(\mathcal{A}\) and \(\mathcal{B}\), with weight function \(|c| = |a|\) if \(c = a \in \mathcal{A}\) and \(|c| = |b|\) if \(c = b \in \mathcal{B}\).
+    \[
+        C(z) = A(z) + B(z).
+    \]
+    \item[Product (\(\mathcal{A} \times \mathcal{B}\)):]
+    The Cartesian product of \(\mathcal{A}\) and \(\mathcal{B}\), with \(|(a,b)| = |a| + |b|\).
+    \[
+        C(z) = A(z) B(z).
+    \]
+    \item[Sequence (\(\operatorname{SEQ}(\mathcal{A})\)):]
+    Assuming \(\mathcal{A}_0 = \varnothing\), \(\operatorname{SEQ}(\mathcal{A}) = \mathcal{E} + \mathcal{A} + \mathcal{A}^2 + \mathcal{A}^3 + \dots\) with \(|(a_1, \dots, a_k)| = \sum_{i=1}^k |a_i|\).
+    \[
+        C(z) = \sum_{k\ge 0} A(z)^k = \frac{1}{1 - A(z)}.
+    \]
+\end{description}
+
+\section*{Iterative specifications}
+
+\begin{example}[Binary strings]
+Let \(\mathcal{Z}_0, \mathcal{Z}_1\) be atomic classes representing \(0\) and \(1\) respectively (so \(Z_0(z) = Z_1(z) = z\)).
+The class of binary strings is
+\[
+    \mathcal{B} = \operatorname{SEQ}(\mathcal{Z}_0 + \mathcal{Z}_1).
+\]
+Its generating function is
+\[
+    B(z) = \frac{1}{1 - (Z_0(z) + Z_1(z))} = \frac{1}{1 - 2z}.
 \]
 \end{example}
 
-\subsection*{How can we find generating functions combinatorially?}
-
-One of the ways is directly, as we did in the example above, by counting the number of objects of each size and then writing down the generating function.
-But the goal of the class is to prove asymptotics about the counting sequence, so if we already know the counting sequence, we don't need to find the generating function to then find the asymptotics.
-
-Another way is recursively.
-The base cases are two combinatorial classes:
-\begin{description}
-    \item[Neutral class] The neutral class \(\mathcal{E} = \{\varepsilon\}\) is the combinatorial class with one object of weight \(0\). Its generating function is \(E(z) = 1\).
-    \item[Atomic class] The atomic class \(\mathcal{Z} = \{\bullet\}\) is the combinatorial class with one object of weight \(1\). Its generating function is \(Z(z) = z\).
-\end{description}
-
-Some operations on combinatorial classes are:
-\begin{description}
-    \item[Disjoint union] The disjoint union \(\mathcal{A}+\mathcal{B}\) of two combinatorial classes \(\mathcal{A}\) and \(\mathcal{B}\) is the combinatorial class \(\mathcal{C} = \mathcal{A}\sqcup \mathcal{B}\) with weight function \(|c| = |a|\) if \(c=a\in \mathcal{A}\) and \(|c| = |b|\) if \(c=b\in \mathcal{B}\). Its generating function is \(C(z) = A(z)+B(z)\).
-    \item[Cartesian product] The Cartesian product \(\mathcal{A}\times \mathcal{B}\) of two combinatorial classes \(\mathcal{A}\) and \(\mathcal{B}\) is the combinatorial class \(\mathcal{C} = \mathcal{A}\times \mathcal{B}\) with weight function \(|(a,b)| = |a| + |b|\) for \((a,b)\in \mathcal{C}\). Its generating function is \(C(z) = A(z)B(z)\).
-    \item[Power] The power \(\mathcal{A}^k = \mathcal{A}\times \mathcal{A}\times \dots\times \mathcal{A}\) (\(k\) times) of a combinatorial class \(\mathcal{A}\) is the combinatorial class \(\mathcal{C} = \mathcal{A}^k\) with weight function \(|(a_1,\dots,a_k)| = |a_1| + \dots + |a_k|\) for \((a_1,\dots,a_k)\in \mathcal{C}\). Its generating function is \(C(z) = A(z)^k\).
-    \item[Sequence] Assume \(\mathcal{A}\) has \(\mathcal{A}_0 = \varnothing\). The sequence \(\operatorname{SEQ}(\mathcal{A})\) of a combinatorial class \(\mathcal{A}\) is the combinatorial class \(\mathcal{C} = \operatorname{SEQ}(\mathcal{A}) = \mathcal{E} + \mathcal{A} + \mathcal{A}^2 + \dots\) with weight function \(|(a_1,\dots,a_k)| = |a_1| + \dots + |a_k|\) for \((a_1,\dots,a_k)\in \mathcal{C}\). Its generating function is \(C(z) = 1/(1-A(z))\).
-\end{description}
-
-\begin{example}[Binary strings, continued]
-    If \(\mathcal{B}\) is the combinatorial class of binary strings, we can write \(\mathcal{B} = \operatorname{SEQ}(\mathcal{Z}_0+\mathcal{Z}_1)\), since a binary string is a sequence of zeroes and ones.
-    Then it is immediate that the generating function of \(\mathcal{B}\) is
-    \[
-        B(z) = \frac{1}{1-(Z_0(z)+Z_1(z))} = \frac{1}{1-(z+z)} = \frac{1}{1-2z}.
-    \]
-\end{example}
-
 \begin{example}[Compositions]
-    A \emph{composition} is a finite sequence of positive integers. The weight of a composition is its sum.
-    The compositions of weight \(3\) are \((3)\), \((2,1)\), \((1,2)\), and \((1,1,1)\).
-    Let \(\mathcal{C}\) be the combinatorial class of compositions.
-    Let \(\mathcal{P}\) be the combinatorial class of positive integers, with weight function \(|n| = n\).
-    We can write
-    \[
-        \mathcal{C} = \operatorname{SEQ}(\mathcal{P})
-        \qquad \text{and} \qquad
-        \mathcal{P} = \mathcal{Z} \times \operatorname{SEQ}(\mathcal{Z}).
-    \]
-    For the generating functions, we have \(P(z) = \frac{z}{1-z}\) and
-    \[
-        C(z) = \frac{1}{1-P(z)} = \frac{1}{1-\frac{z}{1-z}} = \frac{1-z}{1-2z} = 1 + \frac{z}{1-2z}.
-    \]
-    If \(n \geq 1\), then
-    \[
-        c_n = [z^n]C(z) = [z^n]\frac{z}{1-2z} = [z^{n-1}]\frac{1}{1-2z} = 2^{n-1}.
-    \]
+A \emph{composition} of \(n\) is a sequence of positive integers summing to \(n\).
+Let \(\mathcal{P}\) be the class of positive integers (with \(|n| = n\)), and let \(\mathcal{C}\) be the class of compositions.
+Then
+\[
+    \mathcal{P} = \mathcal{Z} \times \operatorname{SEQ}(\mathcal{Z}) \implies P(z) = \frac{z}{1-z},
+\]
+and
+\[
+    \mathcal{C} = \operatorname{SEQ}(\mathcal{P}) \implies C(z) = \frac{1}{1 - P(z)} = \frac{1}{1 - \frac{z}{1-z}} = \frac{1-z}{1-2z} = 1 + \frac{z}{1-2z}.
+\]
+Extracting the coefficient for \(n \ge 1\):
+\[
+    c_n = [z^n] C(z) = [z^n] \frac{z}{1-2z} = [z^{n-1}] \frac{1}{1-2z} = 2^{n-1}.
+\]
 \end{example}
