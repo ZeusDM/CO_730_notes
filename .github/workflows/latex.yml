@@ -14,8 +14,6 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/moderncv/debian-texlive-docker:main
-    env:
-      TZ: 'America/Toronto'
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -33,15 +31,12 @@ jobs:
           name: CO_730_notes.pdf
           path: CO_730_notes.pdf
 
-      - name: Get Current Date and Time
-        id: datetime
-        run: echo "date=$(date '+%Y-%m-%d')" >> $GITHUB_OUTPUT
-
-      - name: Create GitHub Release
+      - name: Create or Update GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.datetime.outputs.date }}
-          name: Asymptotic Enumeration (CO 730) Lecture Notes ${{ steps.datetime.outputs.date }}
+          tag_name: latest
+          name: Asymptotic Enumeration (CO 730) Lecture Notes
           files: CO_730_notes.pdf
+          make_latest: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
