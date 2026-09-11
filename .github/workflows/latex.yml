@@ -1,0 +1,47 @@
+name: Build and Release LaTeX Document
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build and Release
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/moderncv/debian-texlive-docker:main
+    env:
+      TZ: 'America/Toronto'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build PDF
+        run: |
+          latexmk -lualatex notes.tex
+          mv notes.pdf CO_730_notes.pdf
+
+      - name: Upload PDF Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: CO_730_notes.pdf
+          path: CO_730_notes.pdf
+
+      - name: Get Current Date and Time
+        id: datetime
+        run: echo "date=$(date '+%Y-%m-%d')" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.datetime.outputs.date }}
+          name: Asymptotic Enumeration (CO 730) Lecture Notes ${{ steps.datetime.outputs.date }}
+          files: CO_730_notes.pdf
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
