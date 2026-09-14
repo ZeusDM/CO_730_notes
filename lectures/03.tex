@@ -1,9 +1,9 @@
-\lecture{3}{2026-09-14}{}
+\lecture{3}{2026-09-14}{Starting on asymptotics}
 
 \begin{example}[Average number of zeroes in binary strings]
     Recall that the bivariate generating function for binary strings parameterized by the number of zeroes is
     \[
-        B(u, z) = \frac{1}{1 - (uz + z)} = \frac{1}{1 - z(1+u)}.
+        B(u, z) = \frac{1}{1 - (uz + z)} = \frac{1}{1 - (1+u)z}.
     \]
     We compute
     \[
@@ -21,71 +21,89 @@
 \end{example}
 
 \begin{example}[Average number of ones in a composition]
-    Recall that the unparameterized class \(\mathcal{C}\) of compositions has a specification
+    Recall that a composition is an ordered sequence of positive integers (parts).
+    Each part has size at least \(1\), so a part is either \(1\) (represented by \(\mathcal{Z}\)) or at least \(2\) (represented by \(\mathcal{Z}^2 \times \operatorname{SEQ}(\mathcal{Z})\)).
+    Thus, the unparameterized class \(\mathcal{C}\) of compositions has specification
     \[
         \mathcal{C} = \operatorname{SEQ}(\mathcal{Z} \times \operatorname{SEQ}(\mathcal{Z})) = \operatorname{SEQ}(\mathcal{Z} + \mathcal{Z}^2 \times \operatorname{SEQ}(\mathcal{Z})).
     \]
-    We track the number of ones by replacing the atom \(\mathcal{Z}\) with \(\mathcal{Z} \times \mu\):
+    We track the number of ones by replacing the atom \(\mathcal{Z}\) representing parts of size \(1\) with \(\mathcal{Z} \times \mu\):
     \[
         \mathcal{C} = \operatorname{SEQ}((\mathcal{Z} \times \mu) + \mathcal{Z}^2 \times \operatorname{SEQ}(\mathcal{Z})),
     \]
     which gives the bivariate generating function
     \[
-        C(u, z) = \frac{1}{1 - (uz + z^2 \frac{1}{1-z})} = \frac{1-z}{(1-z)(1-uz) - z^2}.
+        C(u, z) = \frac{1}{1 - \left(uz + \frac{z^2}{1-z}\right)} = \frac{1-z}{(1-z)(1-uz) - z^2}.
+    \]
+    For the unparameterized count, setting \(u=1\) gives
+    \[
+        C(1, z) = \frac{1-z}{1-2z} = 1 + \sum_{n \ge 1} 2^{n-1} z^n \implies [z^n] C(1, z) = 2^{n-1} \quad (n \ge 1).
+    \]
+    Differentiating with respect to \(u\) and evaluating at \(u=1\):
+    \[
+        C_u(1, z) = \left. \frac{\partial C(u, z)}{\partial u} \right|_{u=1} = \frac{z(1-z)^2}{(1-2z)^2}.
+    \]
+    Extracting coefficients for \(n \ge 2\) yields
+    \[
+        [z^n] C_u(1, z) = (n+2) 2^{n-3}.
+    \]
+    Therefore, for \(n \ge 2\), the expected number of ones in a composition of \(n\) is
+    \[
+        \mathbb{E}[\chi_n] = \frac{[z^n] C_u(1, z)}{[z^n] C(1, z)} = \frac{(n+2)2^{n-3}}{2^{n-1}} = \frac{n+2}{4} \sim \frac{n}{4}.
     \]
 \end{example}
 
 \section*{Basics of Asymptotics}
 
-Let \(f_n\) and \(g_n\) be functions from \(\mathbb{N}\) to \(\mathbb{R}_{\ge 0}\).
+Let \(f_n\) and \(g_n\) be sequences of non-negative real numbers, with \(g_n > 0\) for sufficiently large \(n\).
 We write:
 \begin{itemize}
-    \item \(f_n \sim g_n\) if \(\lim_{n\to\infty} f_n/g_n = 1\);
-    \item \(f_n = O(g_n)\) if there exists a constant \(C > 0\) and \(N \in \mathbb{N}\) such that
-        \[ 
-            f_n \le C g_n \quad \text{for all } n \ge N;
-        \]
-    \item \(f_n = o(g_n)\) if \(\lim_{n\to\infty} f_n/g_n = 0\).
+    \item \(f_n \sim g_n\) (\emph{asymptotically equivalent}) if \(\lim_{n\to\infty} \frac{f_n}{g_n} = 1\);
+    \item \(f_n = O(g_n)\) (\emph{big-O}) if there exist constants \(C > 0\) and \(N \in \mathbb{N}\) such that \(f_n \le C g_n\) for all \(n \ge N\);
+    \item \(f_n = o(g_n)\) (\emph{little-o}) if \(\lim_{n\to\infty} \frac{f_n}{g_n} = 0\).
 \end{itemize}
 
-Here is a hierarchy of asymptotic growth rates:
+Here is a hierarchy of typical asymptotic growth rates (assuming constants \(B, C, E > 0\) and \(D > 1\)):
 \begin{center}
     \begin{tabular}{rl}
+        \toprule
         \(A\) & constant \\
         \((\log n)^B\) & polylogarithmic \\
         \(n^C\) & polynomial \\
         \(D^n\) & exponential \\
-        \(n^{En}\) & ``\(n\) to the \(n\)''
+        \(n^{En}\) & ``\(n\) to the \(n\)'' (super-exponential) \\
+        \bottomrule
     \end{tabular}
 \end{center}
+Each scale in the hierarchy grows strictly slower than any scale below it; for instance, \((\log n)^B = o(n^C)\) for all \(B, C > 0\).
 
 \section*{Taylor's Theorem}
 
 \begin{theorem}[Taylor's theorem]
-    Let \(f\) be a complex differentiable function on the set
+    Let \(f\) be analytic on the closed disk \(\{z \in \mathbb{C} : |z - \omega| \le r\}\) for some \(\omega \in \mathbb{C}\) and \(r > 0\).
+    Then, for any \(z\) in the open disk \(D = \{z \in \mathbb{C} : |z - \omega| < r\}\), \(f\) has the expansion
     \[
-        D = \{z \in \mathbb{C} : |z - \omega| < r\}
+        f(z) = \sum_{n=0}^k \frac{f^{(n)}(\omega)}{n!} (z - \omega)^n + (z - \omega)^{k+1} e(z),
     \]
-    for some \(\omega \in \mathbb{C}\) and \(r > 0\).
-    Then, at \(z = \omega\), \(f\) has a Taylor series expansion
+    for some complex function \(e(z)\) satisfying
     \[
-        f(z) = \sum_{n \ge 0}^k \frac{f^{(n)}(\omega)}{n!} (z - \omega)^n + O\left((z - \omega)^{k+1} e(z)\right),
-    \]
-    for some complex funciton \(e(z)\) satisfying
-    \[
-        |e(z)| \le \frac{\max_{|z - \omega| = r} |f(z)|}{r^k(r-|z - \omega|)}.
+        |e(z)| \le \frac{\max_{|\zeta - \omega| = r} |f(\zeta)|}{r^k(r-|z - \omega|)}.
     \] 
 \end{theorem}
 
-\begin{example}
-    We know \(\frac{1}{1+z} = \sum_{k \geq 0} (-1)^k z^k\) for \(|z| < 1\).
-    Therefore, for \(n > 1\), we have
+\begin{example}[Asymptotic expansion in inverse powers]
+    Recall that \(\frac{1}{1+z} = \sum_{k \ge 0} (-1)^k z^k\) for \(|z| < 1\).
+    Substituting \(z = 1/n\) for \(n > 1\) gives
     \[
-        \frac{1}{1+n} = \frac{1}{n} \cdot \frac{1}{1 + \frac{1}{n}} = \frac{1}{n} \sum_{k \geq 0} (-1)^k n^{-k} = \sum_{k \geq 0} (-1)^k n^{-(k+1)}.
+        \frac{1}{1+n} = \frac{1}{n} \cdot \frac{1}{1 + \frac{1}{n}} = \frac{1}{n} \sum_{k \ge 0} (-1)^k n^{-k} = \sum_{k \ge 0} (-1)^k n^{-(k+1)}.
+    \]
+    Truncating after \(K\) terms yields an asymptotic expansion in powers of \(1/n\):
+    \[
+        \frac{1}{1+n} = \frac{1}{n} - \frac{1}{n^2} + \frac{1}{n^3} - \dots + (-1)^K \frac{1}{n^{K+1}} + O(n^{-(K+2)}).
     \]
 \end{example}
 
-
+\section*{Asymptotics of Sums}
 
 For every \(n \in \mathbb{N}\), let \(S(n)\) be a finite subset of \(\mathbb{N}\); usually \(S(n) = \{0, 1, \dots, n\}\).
 How do we find the asymptotics of 
@@ -94,43 +112,56 @@ How do we find the asymptotics of
 \]
 when \(a_n(k)\) is known explicitly?
 
-Note that its not enough to know the asymptotics of \(a_n(k)\) for each fixed \(k\).
+Note that it is not enough to know the asymptotics of \(a_n(k)\) for each fixed \(k\).
 
-\begin{example}
+\begin{example}[Pointwise asymptotics do not sum]
     Let 
     \[
-        a_n(k) = 2^{-k} + 2^{-n+k} \qquad \text{ and } \qquad b_n(k) = 2^{-k}.
+        a_n(k) = 2^{-k} + 2^{-n+k} \qquad \text{and} \qquad b_n(k) = 2^{-k}.
     \]
     Then, for each fixed \(k\), we have \(a_n(k) \sim b_n(k)\) as \(n \to \infty\).
-    However, we have
+    However, summing over \(0 \le k \le n\):
     \[
-        \sum_{k=0}^n a_n(k) = \sum_{k=0}^n 2^{-k} + \sum_{k=0}^n 2^{-n+k} = 2 - 2^{-n} + 2 - 2^{-n} = 4 - 2^{1-n} \sim 4,
+        \sum_{k=0}^n a_n(k) = \sum_{k=0}^n 2^{-k} + \sum_{k=0}^n 2^{-n+k} = (2 - 2^{-n}) + (2 - 2^{-n}) = 4 - 2^{1-n} \sim 4,
     \]
     while
     \[
         \sum_{k=0}^n b_n(k) = \sum_{k=0}^n 2^{-k} = 2 - 2^{-n} \sim 2.
     \]
+    Even though \(a_n(k) \sim b_n(k)\) pointwise for each fixed \(k\), their sums have different asymptotic limits!
+    This failure occurs because the approximation \(a_n(k) \sim b_n(k)\) is not uniform over \(0 \le k \le n\).
 \end{example}
 
-We say that \(a_n(k) \sim b_n(k)\) \emph{uniformly} for \(k \in S(n)\) if
+\begin{definition}[Uniform asymptotic equivalence]
+    Let \(S(n) \subseteq \mathbb{N}\) for each \(n\). We say that \(a_n(k) \sim b_n(k)\) \emph{uniformly} for \(k \in S(n)\) if
+    \[
+        \sup_{k \in S(n)} \left| \frac{a_n(k)}{b_n(k)} - 1 \right| \to 0 \quad \text{as } n \to \infty.
+    \]
+\end{definition}
+When \(a_n(k) \sim b_n(k)\) uniformly on \(S(n)\) and \(b_n(k) \ge 0\), one can safely sum the approximations:
 \[
-    \sup_{k \in S(n)} \left| \frac{a_n(k)}{b_n(k)} - 1 \right| \to 0 \quad \text{as } n \to \infty.
+    \sum_{k \in S(n)} a_n(k) \sim \sum_{k \in S(n)} b_n(k).
 \]
 
-Note: Integrals are limits of sums.
-For example, how can we approximate \(\sum_{k=0}^n k^2\)?
-We can note
+\subsection*{Approximating sums by integrals}
+
+When a sum cannot be evaluated in closed form, integrals can provide sharp asymptotic bounds.
+For example, to approximate \(\sum_{k=0}^n k^2\), we can use the fact that \(f(x) = x^2\) is increasing on \([0, \infty)\).
+For each \(k \ge 1\) and \(x \in [k-1, k]\), we have \((k-1)^2 \le x^2 \le k^2\), which gives
 \[
-    \frac{n^3}{3}
-    =
-    \int_0^n x^2 dx
-    \leq
-    \sum_{k=0}^n k^2
-    \leq
-    \int_0^{n+1} x^2 dx
-    =
-    \frac{(n+1)^3}{3}
-    \sim
-    \frac{n^3}{3}.
+    \int_{k-1}^k x^2 \, dx \le k^2 \le \int_k^{k+1} x^2 \, dx.
 \]
-Therefore, \(\sum_{k=0}^n k^2 \sim \frac{n^3}{3}\).
+Summing over \(k\) from \(0\) to \(n\) yields
+\[
+    \frac{n^3}{3} = \int_0^n x^2 \, dx \le \sum_{k=0}^n k^2 \le \int_0^{n+1} x^2 \, dx = \frac{(n+1)^3}{3} = \frac{n^3}{3} + O(n^2).
+\]
+This sandwich bound not only proves the first-order asymptotic equivalence \(\sum_{k=0}^n k^2 \sim \frac{n^3}{3}\), but also provides an estimate with an explicit error term:
+\[
+    \sum_{k=0}^n k^2 = \frac{n^3}{3} + O(n^2).
+\]
+More sophisticated approximations (such as the Euler--Maclaurin formula or trapezoidal approximations) can provide further terms in the asymptotic expansion.
+
+More generally, for any real \(\alpha > -1\), the same integral comparison gives
+\[
+    \sum_{k=1}^n k^\alpha = \frac{n^{\alpha+1}}{\alpha+1} + O(n^\alpha).
+\]
