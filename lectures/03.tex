@@ -1,0 +1,136 @@
+\lecture{3}{2026-09-14}{}
+
+\begin{example}[Average number of zeroes in binary strings]
+    Recall that the bivariate generating function for binary strings parameterized by the number of zeroes is
+    \[
+        B(u, z) = \frac{1}{1 - (uz + z)} = \frac{1}{1 - z(1+u)}.
+    \]
+    We compute
+    \[
+        [z^n] B(1, z) = [z^n] \frac{1}{1 - 2z} = 2^n
+    \]
+    and
+    \[
+        [z^n] B_u(1, z) = [z^n] \left. \frac{z}{(1 - (1+u)z)^2} \right|_{u=1} = [z^n] \frac{z}{(1 - 2z)^2} = n 2^{n-1},
+    \]
+    using the generalized binomial theorem.
+    Therefore, the expected number of zeroes in a binary string of length \(n\) is
+    \[
+        \mathbb{E}[\chi_n] = \frac{[z^n] B_u(1, z)}{[z^n] B(1, z)} = \frac{n 2^{n-1}}{2^n} = \frac{n}{2}.
+    \]
+\end{example}
+
+\begin{example}[Average number of ones in a composition]
+    Recall that the unparameterized class \(\mathcal{C}\) of compositions has a specification
+    \[
+        \mathcal{C} = \operatorname{SEQ}(\mathcal{Z} \times \operatorname{SEQ}(\mathcal{Z})) = \operatorname{SEQ}(\mathcal{Z} + \mathcal{Z}^2 \times \operatorname{SEQ}(\mathcal{Z})).
+    \]
+    We track the number of ones by replacing the atom \(\mathcal{Z}\) with \(\mathcal{Z} \times \mu\):
+    \[
+        \mathcal{C} = \operatorname{SEQ}((\mathcal{Z} \times \mu) + \mathcal{Z}^2 \times \operatorname{SEQ}(\mathcal{Z})),
+    \]
+    which gives the bivariate generating function
+    \[
+        C(u, z) = \frac{1}{1 - (uz + z^2 \frac{1}{1-z})} = \frac{1-z}{(1-z)(1-uz) - z^2}.
+    \]
+\end{example}
+
+\section*{Basics of Asymptotics}
+
+Let \(f_n\) and \(g_n\) be functions from \(\mathbb{N}\) to \(\mathbb{R}_{\ge 0}\).
+We write:
+\begin{itemize}
+    \item \(f_n \sim g_n\) if \(\lim_{n\to\infty} f_n/g_n = 1\);
+    \item \(f_n = O(g_n)\) if there exists a constant \(C > 0\) and \(N \in \mathbb{N}\) such that
+        \[ 
+            f_n \le C g_n \quad \text{for all } n \ge N;
+        \]
+    \item \(f_n = o(g_n)\) if \(\lim_{n\to\infty} f_n/g_n = 0\).
+\end{itemize}
+
+Here is a hierarchy of asymptotic growth rates:
+\begin{center}
+    \begin{tabular}{rl}
+        \(A\) & constant \\
+        \((\log n)^B\) & polylogarithmic \\
+        \(n^C\) & polynomial \\
+        \(D^n\) & exponential \\
+        \(n^{En}\) & ``\(n\) to the \(n\)''
+    \end{tabular}
+\end{center}
+
+\section*{Taylor's Theorem}
+
+\begin{theorem}[Taylor's theorem]
+    Let \(f\) be a complex differentiable function on the set
+    \[
+        D = \{z \in \mathbb{C} : |z - \omega| < r\}
+    \]
+    for some \(\omega \in \mathbb{C}\) and \(r > 0\).
+    Then, at \(z = \omega\), \(f\) has a Taylor series expansion
+    \[
+        f(z) = \sum_{n \ge 0}^k \frac{f^{(n)}(\omega)}{n!} (z - \omega)^n + O\left((z - \omega)^{k+1} e(z)\right),
+    \]
+    for some complex funciton \(e(z)\) satisfying
+    \[
+        |e(z)| \le \frac{\max_{|z - \omega| = r} |f(z)|}{r^k(r-|z - \omega|)}.
+    \] 
+\end{theorem}
+
+\begin{example}
+    We know \(\frac{1}{1+z} = \sum_{k \geq 0} (-1)^k z^k\) for \(|z| < 1\).
+    Therefore, for \(n > 1\), we have
+    \[
+        \frac{1}{1+n} = \frac{1}{n} \cdot \frac{1}{1 + \frac{1}{n}} = \frac{1}{n} \sum_{k \geq 0} (-1)^k n^{-k} = \sum_{k \geq 0} (-1)^k n^{-(k+1)}.
+    \]
+\end{example}
+
+
+
+For every \(n \in \mathbb{N}\), let \(S(n)\) be a finite subset of \(\mathbb{N}\); usually \(S(n) = \{0, 1, \dots, n\}\).
+How do we find the asymptotics of 
+\[
+    s_n = \sum_{k \in S(n)} a_n(k),
+\]
+when \(a_n(k)\) is known explicitly?
+
+Note that its not enough to know the asymptotics of \(a_n(k)\) for each fixed \(k\).
+
+\begin{example}
+    Let 
+    \[
+        a_n(k) = 2^{-k} + 2^{-n+k} \qquad \text{ and } \qquad b_n(k) = 2^{-k}.
+    \]
+    Then, for each fixed \(k\), we have \(a_n(k) \sim b_n(k)\) as \(n \to \infty\).
+    However, we have
+    \[
+        \sum_{k=0}^n a_n(k) = \sum_{k=0}^n 2^{-k} + \sum_{k=0}^n 2^{-n+k} = 2 - 2^{-n} + 2 - 2^{-n} = 4 - 2^{1-n} \sim 4,
+    \]
+    while
+    \[
+        \sum_{k=0}^n b_n(k) = \sum_{k=0}^n 2^{-k} = 2 - 2^{-n} \sim 2.
+    \]
+\end{example}
+
+We say that \(a_n(k) \sim b_n(k)\) \emph{uniformly} for \(k \in S(n)\) if
+\[
+    \sup_{k \in S(n)} \left| \frac{a_n(k)}{b_n(k)} - 1 \right| \to 0 \quad \text{as } n \to \infty.
+\]
+
+Note: Integrals are limits of sums.
+For example, how can we approximate \(\sum_{k=0}^n k^2\)?
+We can note
+\[
+    \frac{n^3}{3}
+    =
+    \int_0^n x^2 dx
+    \leq
+    \sum_{k=0}^n k^2
+    \leq
+    \int_0^{n+1} x^2 dx
+    =
+    \frac{(n+1)^3}{3}
+    \sim
+    \frac{n^3}{3}.
+\]
+Therefore, \(\sum_{k=0}^n k^2 \sim \frac{n^3}{3}\).
