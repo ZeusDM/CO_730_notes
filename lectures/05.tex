@@ -1,0 +1,120 @@
+\lecture{05}{2026-09-18}{}
+
+Thus, if \(\Omega_1\) and \(\Omega_2\) are two sets of domains, and 
+\(f \colon \Omega_1 \to \mathbb{C}\) and \(g \colon \Omega_2 \to \mathbb{C}\) are analytic functions that agree on their non-empty intersection \(\Omega_1 \cap \Omega_2\), then the function \(h \colon \Omega_1 \cup \Omega_2 \to \mathbb{C}\) defined by
+\[
+    h(z) = \begin{cases}
+        f(z) & z \in \Omega_1, \\
+        g(z) & z \in \Omega_2,
+    \end{cases}
+\]
+is well-defined and analytic on \(\Omega_1 \cup \Omega_2\).
+
+The function \(h\) is called the \emph{analytic continuation} of \(f\) and \(g\) to \(\Omega_1 \cup \Omega_2\).
+
+\begin{example}
+    The function \(\frac{1}{1-z}\) is a direct analytic continuation of the function \(\sum_{n \ge 0} z^n\) from the open disk \(D_0^{(1)}\) to the domain \(\mathbb{C} \setminus \{1\}\).
+\end{example}
+
+Note that general analytic continuations are not unique.
+
+\begin{example}
+    \(F(z) = \sqrt{z}\) defined by \(F(r e^{i\theta}) = \sqrt{r} e^{i\theta/2}\) for \(r > 0\) and \(\theta \in (-\pi, \pi)\).
+    % Finish this example, show how $F(-1)$ can have take two values under two different continuations
+\end{example}
+
+\section*{Complex integration}
+
+In \(\mathbb{R}\), we integrate over intervals \([a, b]\).
+
+In \(\mathbb{C}\), we integrate over curves.
+A \emph{curve} is a piece-wise continuously differentiable function \(\gamma \colon [a, b] \to \mathbb{C}\).
+
+We can write \(\gamma(t) = x(t) + i y(t)\) where \(x(t), y(t) \colon [a, b] \to \mathbb{R}\) are piece-wise continuously differentiable functions.
+
+If \(f\) is defined on \(\gamma([a, b])\), then we define the integral of \(f\) over \(\gamma\) by
+\[
+    \int_\gamma f(z) \, dz = \int_a^b f(\gamma(t)) \gamma'(t) \, dt.
+\]
+when this integral exists.
+
+If \(f(z) = u(z) + i v(z)\) where \(u, v \colon \mathbb{C} \to \mathbb{R}\), then
+\[
+    \int_\gamma f(z) \, dz = \int_\gamma u(z) \, dz + i \int_\gamma v(z) \, dz.
+\]
+
+\begin{proposition}
+    The integral is the same up to a change of parameterization.
+    Formally, if \(\gamma_1 \colon [a, b] \to \mathbb{C}\) and \(\gamma_2 \colon [c, d] \to \mathbb{C}\) are two curves such that there exists a continuously differentiable bijection \(h \colon [a, b] \to [c, d]\) with continuously differentiable inverse satisfying \(\gamma_1(t) = \gamma_2(h(t))\) for all \(t \in [a, b]\), then
+    \[
+        \int_{\gamma_1} f(z) \, dz = \int_{\gamma_2} f(z) \, dz.
+    \]
+\end{proposition}
+
+\begin{example}
+    Let \(C\) be the unit circle \(\{|z| = 1\}\) oriented counter-clockwise.
+    Let's compute the integral
+    \[
+        \int_C z^n \, dz
+    \]
+    for \(n \in \mathbb{Z}\).
+
+    Parametrize \(C\) by \(\gamma(t) = e^{it}\) for \(t \in [-\pi, \pi]\).
+    If \(n \in \mathbb{Z} \setminus \{-1\}\), then
+    \begin{align*}
+        \int_C z^n \, dz
+        &= \int_{-\pi}^{\pi} \gamma(t)^n \gamma'(t) \, dt \\
+        &= \int_{-\pi}^{\pi} e^{int} i e^{it} \, dt \\
+        &= i \int_{-\pi}^{\pi} e^{i(n+1)t} \, dt \\
+        &= \left[ \frac{e^{i(n+1)t}}{(n+1)} \right]_{-\pi}^{\pi} \\
+        &= 0.
+    \end{align*}
+
+    If \(n = -1\), then
+    \begin{align*}
+        \int_C z^{-1} \, dz
+        &= \int_{-\pi}^{\pi} \gamma(t)^{-1} \gamma'(t) \, dt \\
+        &= \int_{-\pi}^{\pi} e^{-it} i e^{it} \, dt \\
+        &= i \int_{-\pi}^{\pi} 1 \, dt \\
+        &= 2\pi i.
+    \end{align*}
+\end{example}
+
+A curve \(\gamma\) is \emph{closed} if \(\gamma(a) = \gamma(b)\),
+and \emph{simple} if \(\gamma\) is injective (except possibly if \(\gamma(a) = \gamma(b)\)).
+
+Two curves with the same endpoints are called \emph{homotopic} in a domain \(\Omega\) if one can be continuously deformed into the other while remaining in \(\Omega\).
+
+For example, the curves \(\gamma_1(t) = e^{it}\) and \(\gamma_2(t) = 2 e^{it}\) for \(t \in [0, 2\pi]\) are not homotopic in the domain \(\mathbb{C} \setminus \{0\}\).
+
+A \emph{loop} in a domain \(\Omega\) is a simple closed curve that is homotopic to a point (a constant curve) in \(\Omega\).
+
+A domain \(\Omega\) is \emph{simply connected} if every simple closed curve in \(\Omega\) is a loop in \(\Omega\).
+
+\begin{theorem}[Jordan curve theorem]
+    Let \(\gamma\) be a simple closed curve in \(\mathbb{C}\).
+    Then \(\mathbb{C} \setminus \gamma\) has exactly two connected components, one bounded (called \emph{the interior}) and one unbounded (called \emph{the exterior}), and \(\gamma\) is the boundary of each component.
+\end{theorem}
+
+A loop is \emph{positively oriented} if the interior of the loop is on the left as we traverse the loop.
+
+For example, the loop \(\gamma(t) = e^{it}\) for \(t \in [0, 2\pi]\) is positively oriented.
+
+\begin{proposition}[Path independence]
+    If \(f\) is analytic in a domain \(\Omega\) and \(\gamma_1\) and \(\gamma_2\) are two curves in \(\Omega\) with the same endpoints that are homotopic in \(\Omega\), then
+    \[
+        \int_{\gamma_1} f(z) \, dz = \int_{\gamma_2} f(z) \, dz.
+    \]
+\end{proposition}
+
+The proof boils down to the fact that if \(\gamma\) is a loop in \(\Omega\) and \(f\) is analytic in \(\Omega\), then
+\[
+    \int_\gamma f(z) \, dz = 0.
+\]
+
+\begin{proposition}[Maximum modulus bound]
+    If \(f(z)\) is continuous on a curve \(\gamma\), then
+    \[
+        \left| \int_\gamma f(z) \, dz \right| \leq \operatorname{length}(\gamma) \cdot \left( \max_{z \in \gamma} |f(z)| \right)
+    \]
+\end{proposition}
