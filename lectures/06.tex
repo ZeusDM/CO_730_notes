@@ -1,0 +1,136 @@
+\lecture{6}{2026-09-21}{Singularities, residues, and meromorphic asymptotics}
+
+\section*{Singularities and Laurent expansions}
+
+The asymptotic behavior of a sequence is determined by the singularities of its generating function:
+\begin{itemize}
+    \item \emph{Division by zero} leads to poles (meromorphic functions);
+    \item \emph{Zero in a square root} leads to algebraic branch points;
+    \item \emph{Zero in a logarithm} leads to $D$-finite singularities.
+\end{itemize}
+
+\begin{definition}[Annulus and punctured disk]
+    The \emph{open annulus} of inner radius \(r\) and outer radius \(R\) (\(0 \le r < R \le \infty\)) centered at \(z = a\) is the set
+    \[
+        A_{r, R}(a) = \{ z \in \mathbb{C} : r < |z - a| < R \}.
+    \]
+    When \(r = 0\), the annulus \(A_{0, R}(a) = \{ z \in \mathbb{C} : 0 < |z - a| < R \}\) is called a \emph{punctured disk} centered at \(a\), also denoted \(D^*(a, R)\).
+\end{definition}
+
+\begin{definition}[Isolated singularity]
+    We say that \(z = a\) is an \emph{isolated singularity} of a function \(f\) if \(f\) is analytic in a punctured disk centered at \(a\), but not analytic at \(z = a\).
+\end{definition}
+
+When a function is analytic in an annulus, its power series representation is generalized by a Laurent expansion featuring both positive and negative powers.
+
+\begin{proposition}[Laurent expansion]
+    Let \(a \in \mathbb{C}\) and \(0 \le r < R \le \infty\).
+    Suppose \(f\) is analytic in the annulus \(A_{r, R}(a)\).
+    Then \(f\) has a unique Laurent expansion
+    \begin{equation}
+        \label{eq:laurent-expansion}
+        f(z) = \sum_{n=-\infty}^{\infty} c_n (z - a)^n = \sum_{n=1}^{\infty} c_{-n} (z - a)^{-n} + \sum_{n=0}^{\infty} c_n (z - a)^n,
+    \end{equation}
+    which converges uniformly to \(f(z)\) on every compact subset of \(A_{r, R}(a)\).
+\end{proposition}
+
+Suppose now that the expansion \eqref{eq:laurent-expansion} is valid in a punctured disk \(A_{0, R}(a)\) around an isolated singularity \(z = a\).
+The negative-power terms form the \emph{principal part} of \(f\) at \(a\), and their behavior classifies the singularity:
+\begin{itemize}
+    \item \textbf{Removable singularity}: If \(c_n = 0\) for all \(n < 0\), then \(f\) can be analytically continued to \(z = a\) by defining \(f(a) = c_0\).
+    \item \textbf{Pole of order \(M\)}: If there exists an integer \(M \ge 1\) such that \(c_{-M} \neq 0\) but \(c_{-n} = 0\) for all \(n > M\), then \(z = a\) is called a \emph{pole of order \(M\)}.
+    When \(M = 1\), \(z = a\) is called a \emph{simple pole}.
+    \item \textbf{Essential singularity}: If \(c_n \neq 0\) for infinitely many \(n < 0\), then \(z = a\) is called an \emph{essential singularity}.
+\end{itemize}
+
+\begin{definition}[Residue]
+    The coefficient \(c_{-1}\) of \((z - a)^{-1}\) in the Laurent expansion \eqref{eq:laurent-expansion} of \(f\) at an isolated singularity \(z = a\) is called the \emph{residue} of \(f\) at \(z = a\), denoted
+    \[
+        \Res_{z=a} f(z) = c_{-1}.
+    \]
+\end{definition}
+
+Essential singularities exhibit extraordinarily chaotic behavior near the singular point:
+
+\begin{theorem}[Picard's Great Theorem]
+    In every neighborhood of an essential singularity, an analytic function takes on every complex value infinitely many times, with at most one exception.
+\end{theorem}
+
+For example, \(f(z) = e^{1/z} = \sum_{n=0}^{\infty} \frac{1}{n!} z^{-n}\) has an essential singularity at \(z = 0\) and takes on every value in \(\mathbb{C} \setminus \{0\}\) infinitely often in any neighborhood of the origin.
+
+\begin{example}[Laurent expansion of tangent at \(\pi/2\)]
+    At \(z = \pi/2\), the Laurent expansion of \(\tan(z)\) is
+    \[
+        \tan(z) = -\frac{1}{z - \pi/2} + \frac{1}{3}\left( z - \frac{\pi}{2} \right) + \frac{1}{45}\left( z - \frac{\pi}{2} \right)^3 + \dots
+    \]
+    Thus, \(z = \pi/2\) is a simple pole and \(\Res_{z=\pi/2} \tan(z) = -1\).
+\end{example}
+
+
+\section*{Meromorphic functions and the residue theorem}
+
+\begin{definition}[Meromorphic function]
+    A function \(f\) is \emph{meromorphic} at \(z = a\) if it is analytic at \(a\) or has a pole at \(a\).
+    We say \(f\) is meromorphic in a domain \(\Omega\) if it is meromorphic at every point in \(\Omega\).
+\end{definition}
+
+Meromorphic functions admit a natural algebraic characterization as local quotients of analytic functions:
+a function \(f\) is meromorphic at \(z = a\) if and only if there exists an open neighborhood \(U\) of \(a\) and analytic functions \(g, h \colon U \to \mathbb{C}\) (with \(h \not\equiv 0\)) such that
+\[
+    f(z) = \frac{g(z)}{h(z)} \quad \text{for all } z \in U \setminus \{a\}.
+\]
+
+\begin{lemma}
+    \label{lem:quotient-poles}
+    Let \(f(z) = \frac{g(z)}{h(z)}\) in a neighborhood of \(a\), where \(g\) and \(h\) are analytic at \(a\) and \(h \not\equiv 0\).
+    Let \(r = \min \{ k \ge 0 : g^{(k)}(a) \neq 0 \}\) and \(s = \min \{ k \ge 0 : h^{(k)}(a) \neq 0 \}\).
+    Then \(f\) has a pole of order \(s - r\) at \(z = a\) if \(s > r\), and is analytic at \(a\) if \(s \le r\).
+    When \(s = 1\) and \(r = 0\) (\(z = a\) is a simple pole),
+    \[
+        \Res_{z=a} \frac{g(z)}{h(z)} = \frac{g(a)}{h'(a)}.
+    \]
+\end{lemma}
+
+\begin{proposition}
+    In any compact (bounded and closed) subset of \(\mathbb{C}\), a non-zero meromorphic function has only finitely many zeroes and finitely many poles.
+\end{proposition}
+
+\begin{theorem}[Cauchy residue theorem]
+    \label{thm:cauchy-residue}
+    Let \(f\) be meromorphic in a domain \(\Omega\), and let \(\gamma\) be a positively oriented loop in \(\Omega\) on which \(f\) is analytic.
+    If \(\{a_1, a_2, \dots, a_r\}\) are the poles of \(f\) in the interior of \(\gamma\), then
+    \[
+        \frac{1}{2\pi i} \int_\gamma f(z) \, dz = \sum_{j=1}^r \Res_{z = a_j} f(z).
+    \]
+\end{theorem}
+
+
+
+\begin{example}[Asymptotics of alternating permutations]
+    An \emph{alternating permutation} (or \emph{zigzag permutation}) is a permutation \((\pi_1, \pi_2, \dots, \pi_n)\) of \(\{1, 2, \dots, n\}\) such that \(\pi_1 < \pi_2 > \pi_3 < \pi_4 > \dots\)
+    André (1879) proved that the exponential generating function of \(a_n\), the number of alternating permutations of size \(n\) (with \(a_n = 0\) for even \(n\)), is \(\sum_{n \ge 0} \frac{a_n}{n!} z^n = \tan(z)\).
+
+    Since \(\tan(z) = \frac{\sin(z)}{\cos(z)}\) has simple poles at \(\pm \frac{\pi}{2}, \pm \frac{3\pi}{2}, \dots\) with residue \(-1\), the Cauchy integral formula gives
+    \[
+        \frac{a_n}{n!} = \Res_{z=0}\left( \frac{\tan(z)}{z^{n+1}} \right) = \frac{1}{2\pi i} \int_{|z|=\varepsilon} \frac{\tan(z)}{z^{n+1}} \, dz \quad \left(0 < \varepsilon < \frac{\pi}{2}\right).
+    \]
+    Integrating instead over \(|z| = 2\) (since \(\pi/2 < 2 < 3\pi/2\)), the integral \(I_n = \frac{1}{2\pi i} \int_{|z|=2} \frac{\tan(z)}{z^{n+1}} \, dz\) encloses only the poles at \(0\) and \(\pm \pi/2\).
+    By the Cauchy residue theorem,
+    \[
+        I_n = \Res_{z=0}\left( \frac{\tan(z)}{z^{n+1}} \right) + \Res_{z=\frac{\pi}{2}}\left( \frac{\tan(z)}{z^{n+1}} \right) + \Res_{z=-\frac{\pi}{2}}\left( \frac{\tan(z)}{z^{n+1}} \right).
+    \]
+    Since \(\Res_{z = \pm \pi/2} \left( \frac{\tan(z)}{z^{n+1}} \right) = -\left(\pm \frac{2}{\pi}\right)^{n+1}\), solving for \(\frac{a_n}{n!} = \Res_{z=0}\left( \frac{\tan(z)}{z^{n+1}} \right)\) yields
+    \[
+        \frac{a_n}{n!} = I_n + \left( \frac{2}{\pi} \right)^{n+1} + \left( -\frac{2}{\pi} \right)^{n+1}.
+    \]
+    Because \(|\tan(z)| \le M\) on \(|z| = 2\), the Maximum Modulus Bound implies \(|I_n| \le \frac{1}{2\pi}(4\pi) \frac{M}{2^{n+1}} = O(2^{-n})\).
+    Thus, for odd \(n\),
+    \[
+        \frac{a_n}{n!} = 2\left( \frac{2}{\pi} \right)^{n+1} + O(2^{-n}) \sim 2\left( \frac{2}{\pi} \right)^{n+1}.
+    \]
+    More generally, integrating over \(|z| = \tau\) with \(\frac{3\pi}{2} < \tau < \frac{5\pi}{2}\) picks up the next poles at \(\pm \frac{3\pi}{2}\):
+    \[
+        \frac{a_n}{n!} = 2\left( \frac{2}{\pi} \right)^{n+1} + 2\left( \frac{2}{3\pi} \right)^{n+1} + O(\tau^{-n}) \quad (n \text{ odd}).
+    \]
+    Taking \(\tau \to \infty\) yields the exact series \(\frac{a_n}{n!} = 2\left( \frac{2}{\pi} \right)^{n+1} \sum_{k=0}^{\infty} \frac{1}{(2k + 1)^{n+1}}\) for odd \(n\).
+\end{example}
