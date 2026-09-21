@@ -1,74 +1,176 @@
-\lecture{05}{2026-09-18}{}
+\lecture{5}{2026-09-18}{Analytic continuation and complex integration}
 
-Thus, if \(\Omega_1\) and \(\Omega_2\) are two sets of domains, and 
-\(f \colon \Omega_1 \to \mathbb{C}\) and \(g \colon \Omega_2 \to \mathbb{C}\) are analytic functions that agree on their non-empty intersection \(\Omega_1 \cap \Omega_2\), then the function \(h \colon \Omega_1 \cup \Omega_2 \to \mathbb{C}\) defined by
+\section*{Analytic continuation}
+
+By the Identity Theorem, an analytic function on a domain \(\Omega\) is uniquely determined by its values on any non-empty open subset of \(\Omega\). This property provides a principled way to extend the domain of definition of analytic functions.
+
+If \(\Omega_1\) and \(\Omega_2\) are two domains in \(\mathbb{C}\) with non-empty intersection \(\Omega_1 \cap \Omega_2 \neq \varnothing\), and 
+\(f \colon \Omega_1 \to \mathbb{C}\) and \(g \colon \Omega_2 \to \mathbb{C}\) are analytic functions that agree on \(\Omega_1 \cap \Omega_2\), then the function \(h \colon \Omega_1 \cup \Omega_2 \to \mathbb{C}\) defined by
 \[
     h(z) = \begin{cases}
         f(z) & z \in \Omega_1, \\
         g(z) & z \in \Omega_2,
     \end{cases}
 \]
-is well-defined and analytic on \(\Omega_1 \cup \Omega_2\).
+is well-defined and analytic on the domain \(\Omega_1 \cup \Omega_2\).
 
-The function \(h\) is called the \emph{analytic continuation} of \(f\) and \(g\) to \(\Omega_1 \cup \Omega_2\).
+In this case, \(g\) is called a \emph{direct analytic continuation} of \(f\) to \(\Omega_2\), and \(h\) is the analytic continuation of \(f\) and \(g\) to \(\Omega_1 \cup \Omega_2\).
+More generally, we say that \(g\) is an analytic continuation of \(f\) if there exists a chain of direct analytic continuations on consecutively overlapping domains \(\Omega_1, \Omega_2, \dots, \Omega_r\) beginning with \(f\) on \(\Omega_1\) and ending with \(g\) on \(\Omega_r\).
 
-\begin{example}
-    The function \(\frac{1}{1-z}\) is a direct analytic continuation of the function \(\sum_{n \ge 0} z^n\) from the open disk \(D_0^{(1)}\) to the domain \(\mathbb{C} \setminus \{1\}\).
+\begin{example}[Analytic continuation of a geometric series]
+    The rational function \(\frac{1}{1-z}\) is a direct analytic continuation of the power series \(\sum_{n \ge 0} z^n\) from the unit disk \(D_0^{(1)}\) to the domain \(\mathbb{C} \setminus \{1\}\).
 \end{example}
 
 Note that general analytic continuations are not unique.
 
-\begin{example}
-    \(F(z) = \sqrt{z}\) defined by \(F(r e^{i\theta}) = \sqrt{r} e^{i\theta/2}\) for \(r > 0\) and \(\theta \in (-\pi, \pi)\).
-    % Finish this example, show how $F(-1)$ can have take two values under two different continuations
+\pagebreak
+
+\begin{example}[Non-uniqueness of analytic continuation]
+    Consider the right half-plane \(\Omega_0 = \{ z \in \mathbb{C} : \Re(z) > 0 \}\), where the square root function is defined by
+    \[
+        F_0(z) = \sqrt{r} e^{i\theta/2} \quad \text{for } z = r e^{i\theta} \text{ with } r > 0 \text{ and } \theta \in (-\pi/2, \pi/2),
+    \]
+    so that \(F_0(1) = 1\).
+    We can analytically continue \(F_0\) to domains containing the point \(z = -1\) in different ways.
+
+    Let \(\Omega_1 = \mathbb{C} \setminus \{ -iy : y \ge 0 \}\) (the complex plane excluding the non-positive imaginary ray).
+    Every \(z \in \Omega_1\) has polar angle \(\theta \in (-\pi/2, 3\pi/2)\).
+    Defining \(F_1(r e^{i\theta}) = \sqrt{r} e^{i\theta/2}\), we have \(F_1(z) = F_0(z)\) on the overlap \(\Omega_0 \cap \Omega_1 = \Omega_0\).
+    Hence, \(F_1\) is a direct analytic continuation of \(F_0\) to \(\Omega_1\), and since \(-1 = 1 \cdot e^{i\pi} \in \Omega_1\),
+    \( F_1(-1) = e^{i\pi/2} = i \).
+
+    \begin{figure}[b]
+        \begin{minipage}[t]{0.48\textwidth}
+            \centering
+            \begin{tikzpicture}[scale=0.85, >=Stealth]
+                % Domain Omega_1: fill entire displayed region except negative imaginary axis
+                \fill[blue!6, rounded corners=3pt] (-2.2,-2.0) rectangle (2.2,2.0);
+                
+                % Highlight initial domain Omega_0 (right half plane)
+                \fill[blue!14] (0,-2.0) rectangle (2.2,2.0);
+
+                \draw[ line cap=butt, draw=white, line width=3pt, shorten < = -1.5pt, {Round Cap[sep=-0.5]}- ] (0,0) -- (0, -2.0);
+                
+                % Axes
+                \draw[thick, ->] (-2.3, 0) -- (2.3, 0) node[right] {\footnotesize $\Re(z)$};
+                \draw[thick, ->] (0, -2.1) -- (0, 2.4) node[right] {\footnotesize $\Im(z)$};
+
+                \draw[draw=blue!80!black, line width=1pt, line cap=butt] (2.0pt, -2.0) -- (2.0pt, 0) arc[start angle=0, end angle=180, radius=2.0pt] -- (-2.0pt, -2.0);
+                
+                % Start point z = 1
+                \filldraw[black] (1.4,0) circle (2pt);
+                \node[below=2pt, font=\footnotesize] at (1.4,0) {$1$};
+                \node[below=2pt, blue!85!black, font=\tiny] at (1.2, -0.6) {$F_0(1)=1$};
+                
+                % Target point z = -1
+                \filldraw[black] (-1.4,0) circle (2pt);
+                \node[below=2pt, font=\footnotesize] at (-1.4,0) {$-1$};
+                \node[below=2pt, blue!85!black, font=\tiny] at (-1.2, -0.6) {$F_1(-1) = +i$};
+                
+                % Arc via top (argument goes from 0 to pi)
+                \draw[very thick, blue!80!black, ->] (1.4,0) arc (0:95:1.4);
+                \draw[very thick, blue!80!black] (0,1.4) arc (90:180:1.4);
+            \end{tikzpicture}
+            \par\vspace{0.4em}
+            {\footnotesize \textbf{(a)} Continuation \(F_1\) to \(\Omega_1\)}
+        \end{minipage}\hfill
+        \begin{minipage}[t]{0.48\textwidth}
+            \centering
+            \begin{tikzpicture}[scale=0.85, >=Stealth]
+                % Domain Omega_2: fill entire displayed region except positive imaginary axis
+                \fill[teal!6, rounded corners=3pt] (-2.2,-2.0) rectangle (2.2,2.0);
+                
+                % Highlight initial domain Omega_0 (right half plane)
+                \fill[teal!14] (0,-2.0) rectangle (2.2,2.0);
+
+                \draw[ line cap=butt, draw=white, line width=3pt, shorten < = -1.5pt, {Round Cap[sep=-0.5]}- ] (0,0) -- (0, 2.0);
+                
+                % Axes
+                \draw[thick, ->] (-2.3, 0) -- (2.3, 0) node[right] {\footnotesize $\Re(z)$};
+                \draw[thick, ->] (0, -2.1) -- (0, 2.4) node[right] {\footnotesize $\Im(z)$};
+
+                \draw[draw=teal!80!black, line width=1pt, line cap=butt] (2.0pt, 2.0) -- (2.0pt, 0) arc[start angle=0, end angle=-180, radius=2.0pt] -- (-2.0pt, 2.0);
+                
+                % Start point z = 1
+                \filldraw[black] (1.4,0) circle (2pt);
+                \node[above=2pt, font=\footnotesize] at (1.4,0) {$1$};
+                \node[above=2pt, teal!85!black, font=\tiny] at (1.2, 0.6) {$F_0(1)=1$};
+                
+                % Target point z = -1
+                \filldraw[black] (-1.4,0) circle (2pt);
+                \node[above=2pt, font=\footnotesize] at (-1.4,0) {$-1$};
+                \node[above=2pt, teal!85!black, font=\tiny] at (-1.2, 0.6) {$F_2(-1) = -i$};
+                
+                % Arc via bottom (argument goes from 0 to -pi)
+                \draw[very thick, teal!80!black, ->] (1.4,0) arc (0:-95:1.4);
+                \draw[very thick, teal!80!black] (0,-1.4) arc (-90:-180:1.4);
+            \end{tikzpicture}
+            \par\vspace{0.4em}
+            {\footnotesize \textbf{(b)} Continuation \(F_2\) to \(\Omega_2\)}
+        \end{minipage}
+        \caption{Two distinct direct analytic continuations of \(F_0(z) = \sqrt{r}e^{i\theta/2}\).}
+    \end{figure}
+
+    Let \(\Omega_2 = \mathbb{C} \setminus \{ iy : y \ge 0 \}\), with polar angles \(\theta \in (-3\pi/2, \pi/2)\), and define
+    \( F_2(r e^{i\theta}) = \sqrt{r}e^{i\theta/2} \).
+    This agrees with \(F_0\) on \(\Omega_0\), so it is a direct continuation. Since \(-1=e^{-i\pi}\in\Omega_2\),
+    \( F_2(-1) = e^{-i\pi/2} = -i \).
+
+    Thus both continuations contain \(-1\), but
+    \[
+        F_1(-1) = i \neq -i = F_2(-1).
+    \]
+    Therefore, continuation to a distant point can depend on the domains chosen, even though continuation to a fixed overlapping domain is unique by the Identity Theorem.
 \end{example}
+
 
 \section*{Complex integration}
 
-In \(\mathbb{R}\), we integrate over intervals \([a, b]\).
+In real analysis, we integrate over intervals \([a, b] \subset \mathbb{R}\).
+In complex analysis, we integrate over curves in \(\mathbb{C}\).
 
-In \(\mathbb{C}\), we integrate over curves.
-A \emph{curve} is a piece-wise continuously differentiable function \(\gamma \colon [a, b] \to \mathbb{C}\).
+A \emph{curve} is a piecewise continuously differentiable function \(\gamma \colon [a, b] \to \mathbb{C}\).
+Writing \(\gamma(t) = x(t) + i y(t)\), the components \(x(t), y(t) \colon [a, b] \to \mathbb{R}\) are piecewise continuously differentiable real functions.
 
-We can write \(\gamma(t) = x(t) + i y(t)\) where \(x(t), y(t) \colon [a, b] \to \mathbb{R}\) are piece-wise continuously differentiable functions.
-
-If \(f\) is defined on \(\gamma([a, b])\), then we define the integral of \(f\) over \(\gamma\) by
+\begin{definition}[Contour integral]
+If \(f\) is continuous on the image \(\gamma([a, b])\), the \emph{contour integral} of \(f\) along \(\gamma\) is defined by
 \[
     \int_\gamma f(z) \, dz = \int_a^b f(\gamma(t)) \gamma'(t) \, dt.
 \]
-when this integral exists.
+\end{definition}
 
-If \(f(z) = u(z) + i v(z)\) where \(u, v \colon \mathbb{C} \to \mathbb{R}\), then
+If \(f(z) = u(z) + i v(z)\) with \(u, v \colon \mathbb{C} \to \mathbb{R}\), linearity implies
 \[
     \int_\gamma f(z) \, dz = \int_\gamma u(z) \, dz + i \int_\gamma v(z) \, dz.
 \]
 
 \begin{proposition}
-    The integral is the same up to a change of parameterization.
-    Formally, if \(\gamma_1 \colon [a, b] \to \mathbb{C}\) and \(\gamma_2 \colon [c, d] \to \mathbb{C}\) are two curves such that there exists a continuously differentiable bijection \(h \colon [a, b] \to [c, d]\) with continuously differentiable inverse satisfying \(\gamma_1(t) = \gamma_2(h(t))\) for all \(t \in [a, b]\), then
+    The contour integral depends only on the oriented trace of the curve, not on the parametrization.
+    Formally, if \(\gamma_1 \colon [a, b] \to \mathbb{C}\) and \(\gamma_2 \colon [c, d] \to \mathbb{C}\) are two curves and \(h \colon [a, b] \to [c, d]\) is an orientation-preserving continuously differentiable bijection (with \(h'(t) > 0\) and continuously differentiable inverse) satisfying \(\gamma_1(t) = \gamma_2(h(t))\) for all \(t \in [a, b]\), then
     \[
         \int_{\gamma_1} f(z) \, dz = \int_{\gamma_2} f(z) \, dz.
     \]
 \end{proposition}
 
-\begin{example}
+\begin{example}[Contour integrals of \(z^n\)]
     Let \(C\) be the unit circle \(\{|z| = 1\}\) oriented counter-clockwise.
-    Let's compute the integral
+    We compute the integral
     \[
         \int_C z^n \, dz
     \]
-    for \(n \in \mathbb{Z}\).
-
-    Parametrize \(C\) by \(\gamma(t) = e^{it}\) for \(t \in [-\pi, \pi]\).
+    for each \(n \in \mathbb{Z}\).
+    Parametrizing \(C\) by \(\gamma(t) = e^{it}\) for \(t \in [-\pi, \pi]\), so that \(\gamma'(t) = i e^{it}\):
+    
     If \(n \in \mathbb{Z} \setminus \{-1\}\), then
     \begin{align*}
         \int_C z^n \, dz
         &= \int_{-\pi}^{\pi} \gamma(t)^n \gamma'(t) \, dt \\
         &= \int_{-\pi}^{\pi} e^{int} i e^{it} \, dt \\
         &= i \int_{-\pi}^{\pi} e^{i(n+1)t} \, dt \\
-        &= \left[ \frac{e^{i(n+1)t}}{(n+1)} \right]_{-\pi}^{\pi} \\
-        &= 0.
+        &= \left[ \frac{e^{i(n+1)t}}{n+1} \right]_{-\pi}^{\pi} \\
+        &= 0,
     \end{align*}
+    since \(e^{i(n+1)\pi} = e^{-i(n+1)\pi} = (-1)^{n+1}\).
 
     If \(n = -1\), then
     \begin{align*}
@@ -78,43 +180,58 @@ If \(f(z) = u(z) + i v(z)\) where \(u, v \colon \mathbb{C} \to \mathbb{R}\), the
         &= i \int_{-\pi}^{\pi} 1 \, dt \\
         &= 2\pi i.
     \end{align*}
+    This calculation is crucial for analytic combinatorics: the integral picks out precisely the \(z^{-1}\) term and eliminates all others, making contour integration the primary tool for coefficient extraction.
 \end{example}
 
-A curve \(\gamma\) is \emph{closed} if \(\gamma(a) = \gamma(b)\),
-and \emph{simple} if \(\gamma\) is injective (except possibly if \(\gamma(a) = \gamma(b)\)).
+\subsection*{Topology of curves and Cauchy's theorem}
 
-Two curves with the same endpoints are called \emph{homotopic} in a domain \(\Omega\) if one can be continuously deformed into the other while remaining in \(\Omega\).
+A curve \(\gamma \colon [a, b] \to \mathbb{C}\) is:
+\begin{itemize}
+    \item \emph{closed} if \(\gamma(a) = \gamma(b)\);
+    \item \emph{simple} if \(\gamma\) is injective on \([a, b)\); that is, it does not self-intersect (except possibly at the endpoints \(\gamma(a) = \gamma(b)\)).
+\end{itemize}
 
-For example, the curves \(\gamma_1(t) = e^{it}\) and \(\gamma_2(t) = 2 e^{it}\) for \(t \in [0, 2\pi]\) are not homotopic in the domain \(\mathbb{C} \setminus \{0\}\).
+Two curves \(\gamma_1, \gamma_2\) in a domain \(\Omega\) sharing the same endpoints are called \emph{homotopic} in \(\Omega\) if one can be continuously deformed into the other while remaining entirely inside \(\Omega\).
 
-A \emph{loop} in a domain \(\Omega\) is a simple closed curve that is homotopic to a point (a constant curve) in \(\Omega\).
-
+Following the terminology in \cite{Melczer2021}, a \emph{loop} in a domain \(\Omega\) is a simple closed curve that can be continuously deformed to a single point while staying in \(\Omega\) (i.e., a contractible or null-homotopic simple closed curve).
 A domain \(\Omega\) is \emph{simply connected} if every simple closed curve in \(\Omega\) is a loop in \(\Omega\).
+
+For instance, in the punctured plane \(\Omega = \mathbb{C} \setminus \{0\}\), the circle \(\gamma(t) = e^{it}\) (\(t \in [0, 2\pi]\)) is a simple closed curve, but it cannot be contracted to a point within \(\Omega\) because the puncture at the origin obstructs the deformation. Thus, \(\mathbb{C} \setminus \{0\}\) is not simply connected.
 
 \begin{theorem}[Jordan curve theorem]
     Let \(\gamma\) be a simple closed curve in \(\mathbb{C}\).
-    Then \(\mathbb{C} \setminus \gamma\) has exactly two connected components, one bounded (called \emph{the interior}) and one unbounded (called \emph{the exterior}), and \(\gamma\) is the boundary of each component.
+    Then \(\mathbb{C} \setminus \gamma\) consists of exactly two connected components: one bounded (called \emph{the interior}) and one unbounded (called \emph{the exterior}), with \(\gamma\) being the common boundary of both components.
 \end{theorem}
 
-A loop is \emph{positively oriented} if the interior of the loop is on the left as we traverse the loop.
+A simple closed curve is \emph{positively oriented} if its interior lies to the left as the curve is traversed.
+For example, the circle \(\gamma(t) = e^{it}\) for \(t \in [-\pi, \pi]\) is positively oriented (counter-clockwise).
 
-For example, the loop \(\gamma(t) = e^{it}\) for \(t \in [0, 2\pi]\) is positively oriented.
-
-\begin{proposition}[Path independence]
-    If \(f\) is analytic in a domain \(\Omega\) and \(\gamma_1\) and \(\gamma_2\) are two curves in \(\Omega\) with the same endpoints that are homotopic in \(\Omega\), then
+\begin{proposition}[Path independence and Cauchy's theorem]
+    If \(f\) is analytic in a domain \(\Omega\) and \(\gamma_1, \gamma_2\) are two curves in \(\Omega\) with the same endpoints that are homotopic in \(\Omega\), then
     \[
         \int_{\gamma_1} f(z) \, dz = \int_{\gamma_2} f(z) \, dz.
     \]
-\end{proposition}
-
-The proof boils down to the fact that if \(\gamma\) is a loop in \(\Omega\) and \(f\) is analytic in \(\Omega\), then
-\[
-    \int_\gamma f(z) \, dz = 0.
-\]
-
-\begin{proposition}[Maximum modulus bound]
-    If \(f(z)\) is continuous on a curve \(\gamma\), then
+    In particular, if \(\gamma\) is a loop in \(\Omega\), then
     \[
-        \left| \int_\gamma f(z) \, dz \right| \leq \operatorname{length}(\gamma) \cdot \left( \max_{z \in \gamma} |f(z)| \right)
+        \int_\gamma f(z) \, dz = 0.
     \]
 \end{proposition}
+
+This implies that contour integrals of analytic functions depend only on the homotopy class of the path; contours can be continuously deformed across regions of analyticity without altering the value of the integral.
+
+\begin{proposition}[Maximum modulus integral bound (\(ML\)-inequality)]
+    If \(f\) is continuous on a curve \(\gamma\), then
+    \[
+        \left| \int_\gamma f(z) \, dz \right| \le \operatorname{length}(\gamma) \cdot \max_{z \in \gamma} |f(z)|.
+    \]
+\end{proposition}
+
+\begin{proof}
+    Applying the triangle inequality for integrals:
+    \begin{align*}
+        \left| \int_\gamma f(z) \, dz \right|
+        &= \left| \int_a^b f(\gamma(t)) \gamma'(t) \, dt \right| \\
+        &\le \int_a^b |f(\gamma(t))| |\gamma'(t)| \, dt \\
+        &\le \left( \max_{z \in \gamma} |f(z)| \right) \int_a^b |\gamma'(t)| \, dt = \operatorname{length}(\gamma) \cdot \max_{z \in \gamma} |f(z)|. \qedhere
+    \end{align*}
+\end{proof}
