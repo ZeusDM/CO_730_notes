@@ -9,7 +9,7 @@ The asymptotic behavior of a sequence is determined by the singularities of its 
     \item \emph{Zero in a logarithm} leads to $D$-finite singularities.
 \end{itemize}
 
-\begin{definition}[Annulus and punctured disk]
+\begin{definition}[Annulus and punctured disk, {\cite[Appendix, p.~79]{Melczer2021}}]
     The \emph{open annulus} of inner radius \(r\) and outer radius \(R\) (\(0 \le r < R \le \infty\)) centered at \(z = a\) is the set
     \[
         A_{r, R}(a) = \{ z \in \mathbb{C} : r < |z - a| < R \}.
@@ -17,13 +17,13 @@ The asymptotic behavior of a sequence is determined by the singularities of its 
     When \(r = 0\), the annulus \(A_{0, R}(a) = \{ z \in \mathbb{C} : 0 < |z - a| < R \}\) is called a \emph{punctured disk} centered at \(a\), also denoted \(D^*(a, R)\).
 \end{definition}
 
-\begin{definition}[Isolated singularity]
+\begin{definition}[Isolated singularity, {\cite[Appendix, p.~79]{Melczer2021}}]
     We say that \(z = a\) is an \emph{isolated singularity} of a function \(f\) if \(f\) is analytic in a punctured disk centered at \(a\), but not analytic at \(z = a\).
 \end{definition}
 
 When a function is analytic in an annulus, its power series representation is generalized by a Laurent expansion featuring both positive and negative powers.
 
-\begin{proposition}[Laurent expansion]
+\begin{proposition}[Laurent expansion, {\cite[Proposition 2.23]{Melczer2021}}]
     Let \(a \in \mathbb{C}\) and \(0 \le r < R \le \infty\).
     Suppose \(f\) is analytic in the annulus \(A_{r, R}(a)\).
     Then \(f\) has a unique Laurent expansion
@@ -43,7 +43,7 @@ The negative-power terms form the \emph{principal part} of \(f\) at \(a\), and t
     \item \textbf{Essential singularity}: If \(c_n \neq 0\) for infinitely many \(n < 0\), then \(z = a\) is called an \emph{essential singularity}.
 \end{itemize}
 
-\begin{definition}[Residue]
+\begin{definition}[Residue, {\cite[Appendix, p.~79]{Melczer2021}}]
     The coefficient \(c_{-1}\) of \((z - a)^{-1}\) in the Laurent expansion \eqref{eq:laurent-expansion} of \(f\) at an isolated singularity \(z = a\) is called the \emph{residue} of \(f\) at \(z = a\), denoted
     \[
         \Res_{z=a} f(z) = c_{-1}.
@@ -52,13 +52,13 @@ The negative-power terms form the \emph{principal part} of \(f\) at \(a\), and t
 
 Essential singularities exhibit extraordinarily chaotic behavior near the singular point:
 
-\begin{theorem}[Picard's Great Theorem]
+\begin{theorem}[Picard's Great Theorem, {\cite[Appendix, p.~80]{Melczer2021}}]
     In every neighborhood of an essential singularity, an analytic function takes on every complex value infinitely many times, with at most one exception.
 \end{theorem}
 
 For example, \(f(z) = e^{1/z} = \sum_{n=0}^{\infty} \frac{1}{n!} z^{-n}\) has an essential singularity at \(z = 0\) and takes on every value in \(\mathbb{C} \setminus \{0\}\) infinitely often in any neighborhood of the origin.
 
-\begin{example}[Laurent expansion of tangent at \(\pi/2\)]
+\begin{example}[Laurent expansion of tangent at \(\pi/2\), {\cite[Example 2.32]{Melczer2021}}]
     At \(z = \pi/2\), the Laurent expansion of \(\tan(z)\) is
     \[
         \tan(z) = -\frac{1}{z - \pi/2} + \frac{1}{3}\left( z - \frac{\pi}{2} \right) + \frac{1}{45}\left( z - \frac{\pi}{2} \right)^3 + \dots
@@ -69,7 +69,7 @@ For example, \(f(z) = e^{1/z} = \sum_{n=0}^{\infty} \frac{1}{n!} z^{-n}\) has an
 
 \section*{Meromorphic functions and the residue theorem}
 
-\begin{definition}[Meromorphic function]
+\begin{definition}[Meromorphic function, {\cite[Definition 3.6]{Melczer2021}}]
     A function \(f\) is \emph{meromorphic} at \(z = a\) if it is analytic at \(a\) or has a pole at \(a\).
     We say \(f\) is meromorphic in a domain \(\Omega\) if it is meromorphic at every point in \(\Omega\).
 \end{definition}
@@ -80,7 +80,7 @@ a function \(f\) is meromorphic at \(z = a\) if and only if there exists an open
     f(z) = \frac{g(z)}{h(z)} \quad \text{for all } z \in U \setminus \{a\}.
 \]
 
-\begin{lemma}
+\begin{lemma}[{\cite[Lemma 2.4]{Melczer2021}}]
     \label{lem:quotient-poles}
     Let \(f(z) = \frac{g(z)}{h(z)}\) in a neighborhood of \(a\), where \(g\) and \(h\) are analytic at \(a\) and \(h \not\equiv 0\).
     Let \(r = \min \{ k \ge 0 : g^{(k)}(a) \neq 0 \}\) and \(s = \min \{ k \ge 0 : h^{(k)}(a) \neq 0 \}\).
@@ -91,11 +91,11 @@ a function \(f\) is meromorphic at \(z = a\) if and only if there exists an open
     \]
 \end{lemma}
 
-\begin{proposition}
+\begin{proposition}[{\cite[Appendix, p.~77]{Melczer2021}}]
     In any compact (bounded and closed) subset of \(\mathbb{C}\), a non-zero meromorphic function has only finitely many zeroes and finitely many poles.
 \end{proposition}
 
-\begin{theorem}[Cauchy residue theorem]
+\begin{theorem}[Cauchy residue theorem, {\cite[Proposition 2.24]{Melczer2021}}]
     \label{thm:cauchy-residue}
     Let \(f\) be meromorphic in a domain \(\Omega\), and let \(\gamma\) be a positively oriented loop in \(\Omega\) on which \(f\) is analytic.
     If \(\{a_1, a_2, \dots, a_r\}\) are the poles of \(f\) in the interior of \(\gamma\), then
@@ -106,7 +106,7 @@ a function \(f\) is meromorphic at \(z = a\) if and only if there exists an open
 
 
 
-\begin{example}[Asymptotics of alternating permutations]
+\begin{example}[Asymptotics of alternating permutations, {\cite[Section 2.1.1]{Melczer2021}}]
     An \emph{alternating permutation} (or \emph{zigzag permutation}) is a permutation \((\pi_1, \pi_2, \dots, \pi_n)\) of \(\{1, 2, \dots, n\}\) such that \(\pi_1 < \pi_2 > \pi_3 < \pi_4 > \dots\)
     André (1879) proved that the exponential generating function of \(a_n\), the number of alternating permutations of size \(n\) (with \(a_n = 0\) for even \(n\)), is \(\sum_{n \ge 0} \frac{a_n}{n!} z^n = \tan(z)\).
 

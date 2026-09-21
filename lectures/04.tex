@@ -5,7 +5,7 @@ when a sequence has an explicit closed form, Taylor expansions often provide asy
 when a sequence is defined by a sum of simple terms, integral approximations can do the same.
 We first conclude our discussion of real-variable summation techniques by refining integral approximations via the Euler--Maclaurin summation formula, and then introduce the fundamentals of complex analysis to extract asymptotics directly from generating functions.
 
-\begin{theorem}[Integral comparison for monotone functions]
+\begin{theorem}[Integral comparison for monotone functions, {\cite[Chapter 11]{MelczerNotes}}]
     Let \(a < b\) be integers, and let \(f\) be continuous on \([a-1, b+1]\).
     If \(f\) is increasing on \([a-1, b+1]\), then
     \[
@@ -17,7 +17,7 @@ We first conclude our discussion of real-variable summation techniques by refini
     \]
 \end{theorem}
 
-\begin{corollary}
+\begin{corollary}[{\cite[Chapter 11]{MelczerNotes}}]
     If \(f\) is monotone on \([a-1, b+1]\) and \(|f(x)| \le M\) on \([a-1, b+1]\), then
     \[
         \left| \sum_{k=a}^{b} f(k) - \int_{a}^{b} f(x) \, dx \right| \le M.
@@ -111,7 +111,7 @@ Working in the complex plane \(\mathbb{C}\) is essential to understand the domai
 
 Our presentation of complex analysis is centered around power series.
 
-\begin{definition}[Open disk]
+\begin{definition}[Open disk, {\cite[Appendix, p.~76]{Melczer2021}}]
 An \emph{open disk} centered at \(a \in \mathbb{C}\) of radius \(r > 0\) is the set
 \[
     D_a^{(r)} = \{ z \in \mathbb{C} : |z - a| < r \}.
@@ -143,13 +143,13 @@ An \emph{open disk} centered at \(a \in \mathbb{C}\) of radius \(r > 0\) is the 
     \caption{An open disk \(D_a^{(r)}\) centered at \(a\) with radius \(r\). The dashed boundary indicates that points on the boundary \(|z - a| = r\) are excluded from the set.}
 \end{figure}
 
-\begin{definition}[Open set, domain, and neighborhood]
+\begin{definition}[Open set, domain, and neighborhood, {\cite[Appendix, p.~76]{Melczer2021}}]
 A set \(O \subseteq \mathbb{C}\) is \emph{open} if for every \(a \in O\), there exists \(r > 0\) such that \(D_a^{(r)} \subseteq O\).
 A connected open set is called a \emph{domain}.
 A \emph{neighborhood} of \(a \in \mathbb{C}\) is an open set containing \(a\).
 \end{definition}
 
-\begin{definition}[Analytic function]
+\begin{definition}[Analytic function, {\cite[Definition 2.3]{Melczer2021}}]
 A function \(f(z)\) is \emph{analytic} at \(z = a\) if there exists a neighborhood \(N\) of \(a\) such that \(f(z)\) is representable by a convergent power series
 \[
     f(z) = \sum_{n=0}^{\infty} c_n (z - a)^n
@@ -168,7 +168,7 @@ A function \(f(z)\) is \emph{analytic} on a domain \(\Omega\) if it is analytic 
     which converges for \(|z + 1| < 2\). Thus, \(f\) is also analytic on the disk \(D_{-1}^{(2)}\).
 \end{example}
 
-\begin{proposition}[Complex differentiability]
+\begin{proposition}[Complex differentiability, {\cite[Appendix, p.~76]{Melczer2021}}]
     A function \(f\) is analytic on a domain \(\Omega\) if and only if it is complex-differentiable on \(\Omega\); that is, the derivative
     \[
         f'(a) = \lim_{z \to a} \frac{f(z) - f(a)}{z - a}
@@ -177,13 +177,13 @@ A function \(f(z)\) is \emph{analytic} on a domain \(\Omega\) if it is analytic 
     The complex derivative satisfies the standard sum, product, quotient, and chain rules.
 \end{proposition}
 
-\begin{proposition}[Cauchy--Riemann equations]
+\begin{proposition}[Cauchy--Riemann equations, {\cite[Appendix, p.~76]{Melczer2021}}]
     Let \(f(x + iy) = u(x, y) + i v(x, y)\) for real-valued functions \(u\) and \(v\). If \(f\) is analytic on a domain \(\Omega\), then \(u\) and \(v\) satisfy the Cauchy--Riemann equations
     \[
         \frac{\partial u}{\partial x} = \frac{\partial v}{\partial y} \quad \text{and} \quad \frac{\partial u}{\partial y} = -\frac{\partial v}{\partial x}.
     \]
 \end{proposition}
 
-\begin{proposition}[Identity theorem]
+\begin{proposition}[Identity theorem, {\cite[Lemma 3.2]{Melczer2021}}]
     If \(f\) and \(g\) are analytic functions on a domain \(\Omega\) and agree on a non-empty open subset of \(\Omega\), then \(f = g\) on all of \(\Omega\).
 \end{proposition}

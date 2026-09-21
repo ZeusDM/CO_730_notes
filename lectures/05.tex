@@ -17,7 +17,7 @@ is well-defined and analytic on the domain \(\Omega_1 \cup \Omega_2\).
 In this case, \(g\) is called a \emph{direct analytic continuation} of \(f\) to \(\Omega_2\), and \(h\) is the analytic continuation of \(f\) and \(g\) to \(\Omega_1 \cup \Omega_2\).
 More generally, we say that \(g\) is an analytic continuation of \(f\) if there exists a chain of direct analytic continuations on consecutively overlapping domains \(\Omega_1, \Omega_2, \dots, \Omega_r\) beginning with \(f\) on \(\Omega_1\) and ending with \(g\) on \(\Omega_r\).
 
-\begin{example}[Analytic continuation of a geometric series]
+\begin{example}[Analytic continuation of a geometric series, {\cite[Example 2.30]{Melczer2021}}]
     The rational function \(\frac{1}{1-z}\) is a direct analytic continuation of the power series \(\sum_{n \ge 0} z^n\) from the unit disk \(D_0^{(1)}\) to the domain \(\mathbb{C} \setminus \{1\}\).
 \end{example}
 
@@ -25,7 +25,7 @@ Note that general analytic continuations are not unique.
 
 \pagebreak
 
-\begin{example}[Non-uniqueness of analytic continuation]
+\begin{example}[Non-uniqueness of analytic continuation, {\cite[Example 2.33]{Melczer2021}}]
     Consider the right half-plane \(\Omega_0 = \{ z \in \mathbb{C} : \Re(z) > 0 \}\), where the square root function is defined by
     \[
         F_0(z) = \sqrt{r} e^{i\theta/2} \quad \text{for } z = r e^{i\theta} \text{ with } r > 0 \text{ and } \theta \in (-\pi/2, \pi/2),
@@ -132,7 +132,7 @@ In complex analysis, we integrate over curves in \(\mathbb{C}\).
 A \emph{curve} is a piecewise continuously differentiable function \(\gamma \colon [a, b] \to \mathbb{C}\).
 Writing \(\gamma(t) = x(t) + i y(t)\), the components \(x(t), y(t) \colon [a, b] \to \mathbb{R}\) are piecewise continuously differentiable real functions.
 
-\begin{definition}[Contour integral]
+\begin{definition}[Contour integral, {\cite[Appendix, p.~77]{Melczer2021}}]
 If \(f\) is continuous on the image \(\gamma([a, b])\), the \emph{contour integral} of \(f\) along \(\gamma\) is defined by
 \[
     \int_\gamma f(z) \, dz = \int_a^b f(\gamma(t)) \gamma'(t) \, dt.
@@ -144,7 +144,7 @@ If \(f(z) = u(z) + i v(z)\) with \(u, v \colon \mathbb{C} \to \mathbb{R}\), line
     \int_\gamma f(z) \, dz = \int_\gamma u(z) \, dz + i \int_\gamma v(z) \, dz.
 \]
 
-\begin{proposition}
+\begin{proposition}[{\cite[Appendix, p.~78]{Melczer2021}}]
     The contour integral depends only on the oriented trace of the curve, not on the parametrization.
     Formally, if \(\gamma_1 \colon [a, b] \to \mathbb{C}\) and \(\gamma_2 \colon [c, d] \to \mathbb{C}\) are two curves and \(h \colon [a, b] \to [c, d]\) is an orientation-preserving continuously differentiable bijection (with \(h'(t) > 0\) and continuously differentiable inverse) satisfying \(\gamma_1(t) = \gamma_2(h(t))\) for all \(t \in [a, b]\), then
     \[
@@ -152,7 +152,7 @@ If \(f(z) = u(z) + i v(z)\) with \(u, v \colon \mathbb{C} \to \mathbb{R}\), line
     \]
 \end{proposition}
 
-\begin{example}[Contour integrals of \(z^n\)]
+\begin{example}[Contour integrals of \(z^n\), {\cite[Example 2.31]{Melczer2021}}]
     Let \(C\) be the unit circle \(\{|z| = 1\}\) oriented counter-clockwise.
     We compute the integral
     \[
@@ -198,7 +198,7 @@ A domain \(\Omega\) is \emph{simply connected} if every simple closed curve in \
 
 For instance, in the punctured plane \(\Omega = \mathbb{C} \setminus \{0\}\), the circle \(\gamma(t) = e^{it}\) (\(t \in [0, 2\pi]\)) is a simple closed curve, but it cannot be contracted to a point within \(\Omega\) because the puncture at the origin obstructs the deformation. Thus, \(\mathbb{C} \setminus \{0\}\) is not simply connected.
 
-\begin{theorem}[Jordan curve theorem]
+\begin{theorem}[Jordan curve theorem, {\cite[Appendix, p.~78]{Melczer2021}}]
     Let \(\gamma\) be a simple closed curve in \(\mathbb{C}\).
     Then \(\mathbb{C} \setminus \gamma\) consists of exactly two connected components: one bounded (called \emph{the interior}) and one unbounded (called \emph{the exterior}), with \(\gamma\) being the common boundary of both components.
 \end{theorem}
@@ -206,7 +206,7 @@ For instance, in the punctured plane \(\Omega = \mathbb{C} \setminus \{0\}\), th
 A simple closed curve is \emph{positively oriented} if its interior lies to the left as the curve is traversed.
 For example, the circle \(\gamma(t) = e^{it}\) for \(t \in [-\pi, \pi]\) is positively oriented (counter-clockwise).
 
-\begin{proposition}[Path independence and Cauchy's theorem]
+\begin{proposition}[Path independence and Cauchy's theorem, {\cite[Proposition 2.20]{Melczer2021}}]
     If \(f\) is analytic in a domain \(\Omega\) and \(\gamma_1, \gamma_2\) are two curves in \(\Omega\) with the same endpoints that are homotopic in \(\Omega\), then
     \[
         \int_{\gamma_1} f(z) \, dz = \int_{\gamma_2} f(z) \, dz.
@@ -219,7 +219,7 @@ For example, the circle \(\gamma(t) = e^{it}\) for \(t \in [-\pi, \pi]\) is posi
 
 This implies that contour integrals of analytic functions depend only on the homotopy class of the path; contours can be continuously deformed across regions of analyticity without altering the value of the integral.
 
-\begin{proposition}[Maximum modulus integral bound (\(ML\)-inequality)]
+\begin{proposition}[Maximum modulus integral bound (\(ML\)-inequality), {\cite[Proposition 2.22]{Melczer2021}}]
     If \(f\) is continuous on a curve \(\gamma\), then
     \[
         \left| \int_\gamma f(z) \, dz \right| \le \operatorname{length}(\gamma) \cdot \max_{z \in \gamma} |f(z)|.

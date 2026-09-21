@@ -1,6 +1,6 @@
 \lecture{3}{2026-09-14}{Starting on asymptotics}
 
-\begin{example}[Average number of zeroes in binary strings]
+\begin{example}[Average number of zeroes in binary strings, {\cite[Chapter 7]{MelczerNotes}}]
     Recall that the bivariate generating function for binary strings parameterized by the number of zeroes is
     \[
         B(u, z) = \frac{1}{1 - (uz + z)} = \frac{1}{1 - (1+u)z}.
@@ -20,7 +20,7 @@
     \]
 \end{example}
 
-\begin{example}[Average number of ones in a composition]
+\begin{example}[Average number of ones in a composition, {\cite[Chapter 7]{MelczerNotes}}]
     Recall that a composition is an ordered sequence of positive integers (parts).
     Each part has size at least \(1\), so a part is either \(1\) (represented by \(\mathcal{Z}\)) or at least \(2\) (represented by \(\mathcal{Z}^2 \times \operatorname{SEQ}(\mathcal{Z})\)).
     Thus, the unparameterized class \(\mathcal{C}\) of compositions has specification
@@ -55,13 +55,15 @@
 
 \section*{Basics of Asymptotics}
 
-Let \(f_n\) and \(g_n\) be sequences of non-negative real numbers, with \(g_n > 0\) for sufficiently large \(n\).
-We write:
-\begin{itemize}
-    \item \(f_n \sim g_n\) (\emph{asymptotically equivalent}) if \(\lim_{n\to\infty} \frac{f_n}{g_n} = 1\);
-    \item \(f_n = O(g_n)\) (\emph{big-O}) if there exist constants \(C > 0\) and \(N \in \mathbb{N}\) such that \(f_n \le C g_n\) for all \(n \ge N\);
-    \item \(f_n = o(g_n)\) (\emph{little-o}) if \(\lim_{n\to\infty} \frac{f_n}{g_n} = 0\).
-\end{itemize}
+\begin{definition}[Asymptotic notation, {\cite[Definition 2.4]{Melczer2021}, \cite[Chapter 11]{MelczerNotes}}]
+    Let \(f_n\) and \(g_n\) be sequences of non-negative real numbers, with \(g_n > 0\) for sufficiently large \(n\).
+    We write:
+    \begin{itemize}
+        \item \(f_n \sim g_n\) (\emph{asymptotically equivalent}) if \(\lim_{n\to\infty} \frac{f_n}{g_n} = 1\);
+        \item \(f_n = O(g_n)\) (\emph{big-O}) if there exist constants \(C > 0\) and \(N \in \mathbb{N}\) such that \(f_n \le C g_n\) for all \(n \ge N\);
+        \item \(f_n = o(g_n)\) (\emph{little-o}) if \(\lim_{n\to\infty} \frac{f_n}{g_n} = 0\).
+    \end{itemize}
+\end{definition}
 
 Here is a hierarchy of typical asymptotic growth rates (assuming constants \(B, C, E > 0\) and \(D > 1\)):
 \begin{center}
@@ -79,7 +81,7 @@ Each scale in the hierarchy grows strictly slower than any scale below it; for i
 
 \section*{Taylor's Theorem}
 
-\begin{theorem}[Taylor's theorem]
+\begin{theorem}[Taylor's theorem, {\cite[Appendix, p.~78]{Melczer2021}}]
     Let \(f\) be analytic on the closed disk \(\{z \in \mathbb{C} : |z - \omega| \le r\}\) for some \(\omega \in \mathbb{C}\) and \(r > 0\).
     Then, for any \(z\) in the open disk \(D = \{z \in \mathbb{C} : |z - \omega| < r\}\), \(f\) has the expansion
     \[
@@ -145,7 +147,7 @@ When \(a_n(k) \sim b_n(k)\) uniformly on \(S(n)\) and \(b_n(k) \ge 0\), one can 
 
 \subsection*{Approximating sums by integrals}
 
-When a sum cannot be evaluated in closed form, integrals can provide sharp asymptotic bounds.
+When a sum cannot be evaluated in closed form, integrals can provide sharp asymptotic bounds (see \cite[Chapter 11]{MelczerNotes}).
 For example, to approximate \(\sum_{k=0}^n k^2\), we can use the fact that \(f(x) = x^2\) is increasing on \([0, \infty)\).
 For each \(k \ge 1\) and \(x \in [k-1, k]\), we have \((k-1)^2 \le x^2 \le k^2\), which gives
 \[

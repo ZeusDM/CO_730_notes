@@ -1,6 +1,6 @@
 \lecture{1}{2026-09-09}{Combinatorial constructions}
 
-\begin{definition}[Combinatorial class]
+\begin{definition}[Combinatorial class, {\cite[Definition 2.2]{Melczer2021}, \cite[Chapter 2]{MelczerNotes}}]
 A \emph{combinatorial class} is a pair \((\mathcal{C}, |\cdot|)\) where \(\mathcal{C}\) is a set and \(|\cdot|\colon \mathcal{C}\to \mathbb{N}\) is a \emph{weight function} such that for each \(n\in \mathbb{N}\), the set
 \[
     \mathcal{C}_n = \{c\in \mathcal{C} : |c|=n\}
@@ -9,7 +9,7 @@ is finite.
 The sequence \(c_n = |\mathcal{C}_n|\) for \(n \ge 0\) is the \emph{counting sequence} of \(\mathcal{C}\).
 \end{definition}
 
-\begin{definition}[Generating function]
+\begin{definition}[Generating function, {\cite[Definition 2.2]{Melczer2021}, \cite[Chapter 2]{MelczerNotes}}]
 The \emph{generating function} of a combinatorial class \(\mathcal{C}\) is the formal power series
 \[
     C(z) = \sum_{n\ge 0} c_n z^n = \sum_{c\in \mathcal{C}} z^{|c|}.
@@ -26,7 +26,7 @@ However, the same set with weight function being the number of zeroes is not a c
 
 \section*{Combinatorial constructions}
 
-To build generating functions without first calculating counting sequences, we define combinatorial operations on classes that translate directly into algebraic operations on their generating functions.
+To build generating functions without first calculating counting sequences, we define combinatorial operations on classes that translate directly into algebraic operations on their generating functions (see \cite[Chapter 5]{MelczerNotes} and \cite[Chapter I]{FlajoletSedgewick2009}).
 
 \subsection*{Base classes}
 \begin{description}
@@ -68,7 +68,7 @@ Its generating function is
 \]
 \end{example}
 
-\begin{example}[Compositions]
+\begin{example}[Compositions, {\cite[Chapter 5]{MelczerNotes}}]
 A \emph{composition} of \(n\) is a sequence of positive integers summing to \(n\).
 Let \(\mathcal{P}\) be the class of positive integers (with \(|n| = n\)), and let \(\mathcal{C}\) be the class of compositions.
 Then
