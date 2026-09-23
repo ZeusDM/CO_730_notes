@@ -136,18 +136,17 @@ a function \(f\) is meromorphic at \(z = a\) if and only if there exists an open
 
 \end{example}
 
-\begin{remark}
-    Note that \(\zeta(s) = \sum_{k=1}^{\infty} \frac{1}{k^s}\).
-    When is \(\zeta(n) \in \mathbb{Q}\), for positive integers \(n\)?
-    Now, for \(n\) odd, we have
+\begin{remark}[Values of the Riemann zeta function at even integers]
+    Recall that \(\zeta(s) = \sum_{k=1}^{\infty} \frac{1}{k^s}\).
+    For odd \(n\), separating odd and even terms yields
     \begin{align*}
-        \zeta(n+1) &= \sum_{k=1}^{\infty} \frac{1}{k^{n+1}} \\
-        &= \sum_{k=0}^{\infty} \frac{1}{(2k+1)^{n+1}} + \sum_{k=1}^{\infty} \frac{1}{(2k)^{n+1}} \\
-        &= \sum_{k=0}^{\infty} \frac{1}{(2k+1)^{n+1}} + \frac{1}{2^{n+1}} \sum_{k=1}^{\infty} \frac{1}{k^{n+1}} \\
-        &= \frac{a_n}{2 n!} + \frac{1}{2^{n+1}} \zeta(n+1),
+        \zeta(n+1) &= \sum_{k=0}^{\infty} \frac{1}{(2k+1)^{n+1}} + \sum_{k=1}^{\infty} \frac{1}{(2k)^{n+1}} \\
+        &= \frac{a_n}{2 n!} \left( \frac{\pi}{2} \right)^{n+1} + \frac{1}{2^{n+1}} \zeta(n+1).
     \end{align*}
-    so
+    Solving for \(\zeta(n+1)\) gives
     \[
-        \zeta(n+1) = \frac{2^{n+1}}{2^{n+1} - 1} \cdot \frac{a_n}{2 n!}.
+        \zeta(n+1) = \frac{2^{n+1}}{2^{n+1} - 1} \cdot \frac{a_n}{2 n!} \left( \frac{\pi}{2} \right)^{n+1} = \frac{a_n}{2^{n+2}(2^{n+1} - 1) n!} \pi^{n+1}.
     \]
+    Thus, for every even integer \(m = n+1 \ge 2\), \(\zeta(m)\) is a non-zero rational multiple of \(\pi^m\).
+    Because \(\pi\) is transcendental, this proves that \(\zeta(m) \notin \mathbb{Q}\) for all even integers \(m \ge 2\).
 \end{remark}
