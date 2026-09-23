@@ -1,93 +1,117 @@
-\lecture{7}{2026-09-23}{}
+\lecture{7}{2026-09-23}{The Principles of Analytic Combinatorics}
 
-The example from last lecture greatly generalizes.
-
-If \(F(z) = \sum_{n \geq 0} f_n z^n\) is analytic at \(z = 0\), then \((f_n)_{n \geq 0}\) grows at most exponentially.
-
-From the Cauchy Integral formula,
+The asymptotic technique introduced in the previous lecture generalizes far beyond the tangent function.
+If \(F(z) = \sum_{n \ge 0} f_n z^n\) is analytic at the origin, the Cauchy integral formula yields
 \[
-    f_n = \frac{1}{2\pi i} \int_{|z| = r} \frac{F(z)}{z^{n+1}} \, dz,
+    f_n = \frac{1}{2\pi i} \int_{|z| = r} \frac{F(z)}{z^{n+1}} \, dz
 \]
-The Modulus Maximum Bound implies
-\begin{align*}
-    |f_n| &\leq \frac{1}{2\pi} \operatorname{length}(\{|z| = r\}) \cdot \max_{|z| = \epsilon} \left| \frac{F(z)}{r^{n+1}} \right| \\
-    &= \frac{M}{r^n},
-\end{align*}
-for some \(M > 0\) and all \(n \geq 0\).
-
-The \emph{exponential growth} of \((f_n)_{n \geq 0}\) is defined as
+for any \(r > 0\) strictly less than the radius of convergence of \(F\).
+Applying the Maximum Modulus Bound:
 \[
-    \rho = \limsup_{n \to \infty} |f_n|^{1/n}.
+    |f_n| \le \frac{1}{2\pi} \operatorname{length}(\{|z| = r\}) \cdot \max_{|z| = r} \left| \frac{F(z)}{z^{n+1}} \right|
+    \le \frac{1}{2\pi} (2\pi r) \frac{M}{r^{n+1}} = \frac{M}{r^n},
 \]
+where \(M = \max_{|z| = r} |F(z)|\).
+Consequently, \((f_n)_{n \ge 0}\) grows at most exponentially.
+
+\section*{Exponential growth and dominant singularities}
+
+\begin{definition}[Exponential growth]
+    The \emph{exponential growth} of a sequence \((f_n)_{n \ge 0}\) is defined by
+    \[
+        \rho = \limsup_{n \to \infty} |f_n|^{1/n}.
+    \]
+\end{definition}
 
 For example, if \(f_n = 2^n\), then \(\rho = 2\).
-If \(f_n = 2^n(1 + (-1)^n)\), then \(\rho = 2\).
+If \(f_n = 2^n(1 + (-1)^n)\), then \(\rho = 2\) as well.
 
-Recall the Cauchy Root Test: 
-\(\rho = \frac{1}{R}\), where \(R\) is the radius of convergence of \(\sum_{n \geq 0} f_n z^n\).
+By the Cauchy--Hadamard theorem (root test), \(\rho = \frac{1}{R}\), where \(R\) is the radius of convergence of \(\sum_{n \ge 0} f_n z^n\).
+Because a power series converges up to its nearest singularity, this leads to the fundamental connection between analysis and asymptotics:
 
 \begin{theorem}
-    \(\rho = \frac{1}{R}\), where \(R\) is the minimal modulus of a singularity of \(F(z)\).
+    Let \(F(z) = \sum_{n \ge 0} f_n z^n\) have radius of convergence \(R > 0\).
+    Then \(R\) equals the minimal modulus of a singularity of \(F(z)\), so
+    \[
+        \rho = \frac{1}{R}.
+    \]
 \end{theorem}
+
+\begin{definition}[Dominant singularity]
+    A singularity of \(F(z)\) of minimal modulus \(R\) is called a \emph{dominant singularity}.
+\end{definition}
 
 \begin{example}[Binary trees]
     Recall that the generating function of binary trees is \(B(z) = \frac{1 - \sqrt{1 - 4z}}{2z}\).
-    The singularity of \(B(z)\) is at \(z = \frac{1}{4}\), so the exponential growth of the number of binary trees is \(\rho = 4\).
-    Therefore, \(b_n = 4^n \cdot \Lambda(n)\), where \(\Lambda(n)\) is a subexponential factor.
+    The dominant singularity of \(B(z)\) is the branch point at \(z = 1/4\), so the exponential growth of binary trees is \(\rho = 4\).
+    Therefore, \(b_n = 4^n \cdot \Lambda(n)\), where \(\Lambda(n)\) grows subexponentially.
 \end{example}
 
-\paragraph{First Principle of Analytic Combinatorics}
-The location of a generating function's singularities determines the exponential growth of its coefficients.
 
-\paragraph{Second Principle of Analytic Combinatorics}
-The \emph{nature} or \emph{type} of a generating function's singularities determines the subexponential growth of its coefficients.
+\section*{The principles of analytic combinatorics}
+
+These observations form the core philosophy of analytic combinatorics, formulated by Flajolet and Sedgewick:
+
+\begin{itemize}
+    \item \textbf{First Principle of Analytic Combinatorics}: The \emph{location} of a generating function's singularities determines the \emph{exponential growth} \(\rho\) of its coefficients.
+    \item \textbf{Second Principle of Analytic Combinatorics}: The \emph{nature} (or \emph{type}) of a generating function's singularities determines the \emph{subexponential growth} of its coefficients.
+\end{itemize}
 
 \begin{example}
-    If \(F(z) = \frac{1}{1 - 4z}\), then \(f_n = 4^n\).
-    If \(F(z) = \frac{1}{(1 - 4z)^2}\), then \(f_n = (n + 1) 4^n\).
-    If \(F(z) = \frac{1 - \sqrt{1 - 4z}}{2z}\), then \(f_n \sim \frac{4^n}{\sqrt{\pi n^3}}\).
-
-    All of these functions have a singularity at \(z = \frac{1}{4}\), which determines the exponential growth of their coefficients.
-    The nature of the singularity determines the subexponential growth of their coefficients.
+    Consider three generating functions, each with a singularity at \(z = 1/4\):
+    \begin{itemize}
+        \item If \(F(z) = \frac{1}{1 - 4z}\) (simple pole), then \(f_n = 4^n\).
+        \item If \(F(z) = \frac{1}{(1 - 4z)^2}\) (double pole), then \(f_n = (n + 1) 4^n\).
+        \item If \(F(z) = \frac{1 - \sqrt{1 - 4z}}{2z}\) (algebraic branch point), then \(f_n \sim \frac{4^n}{\sqrt{\pi n^3}}\).
+    \end{itemize}
+    In all three cases, the location \(z = 1/4\) fixes the base \(4^n\), while the nature of the singularity determines the subexponential factor (\(1\), \(n+1\), or \(n^{-3/2}/\sqrt{\pi}\)).
 \end{example}
 
+
+\section*{Asymptotics from polar singularities}
+
+When the dominant singularities are poles, sequence asymptotics can be derived systematically by residue calculus.
+
 \begin{proposition}
-    Suppose \(F(z) = \sum_{n \geq 0} f_n z^n\) is analytic on the circle \(\{|z| = R\}\) and analytic in \(\{|z| < R\}\) except at a finite number of distinct nonzero poles \(\sigma_1, \dots, \sigma_m\).
-    Then, there exist polynomials \(P_1, \dots, P_m\) such that
+    \label{prop:rational-asymptotics}
+    Suppose \(F(z) = \sum_{n \ge 0} f_n z^n\) is analytic on the circle \(\{|z| = R\}\) and analytic in the disk \(\{|z| < R\}\) except at a finite number of distinct nonzero poles \(\sigma_1, \dots, \sigma_m\).
+    Then there exist polynomials \(P_1, \dots, P_m\) such that
     \[
-        f_n = \left(\sum_{k=1}^m P_k(n) \sigma_k^{-n}\right) + O(R^{-n}),
+        f_n = \sum_{k=1}^m P_k(n) \sigma_k^{-n} + O(R^{-n}),
     \]
     where the degree of \(P_k\) is one less than the order of the pole at \(\sigma_k\).
 \end{proposition}
 
 \begin{proof}
+    Integrating over the circle \(|z| = R\) encloses the origin and the poles \(\sigma_1, \dots, \sigma_m\).
+    By the Cauchy residue theorem,
     \[
-        \underbrace{\int_{|z| = r} \frac{F(z)}{z^{n+1}} \, dz}_{O(R^{-n})} =
-        \underbrace{\Res_{z = 0} \frac{F(z)}{z^{n+1}}}_{f_n}
-        +
-        \sum_{k=1}^m \Res_{z = \sigma_k} \frac{F(z)}{z^{n+1}} + \int_{|z| = R} \frac{F(z)}{z^{n+1}} \, dz.
+        \frac{1}{2\pi i} \int_{|z| = R} \frac{F(z)}{z^{n+1}} \, dz = \Res_{z = 0} \left( \frac{F(z)}{z^{n+1}} \right) + \sum_{k=1}^m \Res_{z = \sigma_k} \left( \frac{F(z)}{z^{n+1}} \right).
     \]
-
-    It's sufficient to show that \(\Res_{z = \sigma_k} \frac{F(z)}{z^{n+1}} = P_k(n) \sigma_k^{-n}\) for some polynomial \(P_k\) of degree one less than the order of the pole at \(\sigma_k\).
-
-    If \(z = \sigma_k\) is a pole of order \(r\), then
+    Since \(\Res_{z=0} \left( \frac{F(z)}{z^{n+1}} \right) = f_n\), rearranging gives
     \[
-        \Res_{z = \sigma_k} \frac{F(z)}{z^{n+1}} = \frac{1}{(r-1)!} \lim_{z \to \sigma_k} \frac{d^{r-1}}{dz^{r-1}} \left((z - \sigma_k)^r \frac{F(z)}{z^{n+1}}\right).
+        f_n = - \sum_{k=1}^m \Res_{z = \sigma_k} \left( \frac{F(z)}{z^{n+1}} \right) + \frac{1}{2\pi i} \int_{|z| = R} \frac{F(z)}{z^{n+1}} \, dz.
     \]
-
-    Taking \(r-1\) derivatives gives a polynomial of degree \(r-1\) in \(n\), multiplied by \(\sigma_k^{-n}\).
+    By the Maximum Modulus Bound, the integral is \(O(R^{-n})\).
+    If \(\sigma_k\) is a pole of order \(d\), then
+    \[
+        \Res_{z = \sigma_k} \left( \frac{F(z)}{z^{n+1}} \right) = \frac{1}{(d-1)!} \lim_{z \to \sigma_k} \frac{d^{d-1}}{dz^{d-1}} \left( (z - \sigma_k)^d F(z) z^{-(n+1)} \right).
+    \]
+    By Leibniz's rule, differentiating \(z^{-(n+1)}\) up to \(d-1\) times produces factors of the form \((-1)^j (n+1)\dots(n+j) \sigma_k^{-(n+1+j)}\), which is a polynomial in \(n\) of degree \(d-1\) multiplied by \(\sigma_k^{-n}\).
+    Absorbing the negative sign into \(P_k(n) = -\Res_{z=\sigma_k} \left( \frac{F(z)}{z^{n+1}} \right) \sigma_k^n\) yields the claim.
 \end{proof}
 
-\begin{example}[Derrangements]
-    The exponential generating function of derangements is \(D(z) = \frac{e^{-z}}{1 - z}\).
-    The singularity of \(D(z)\) is at \(z = 1\), which is a simple pole.
+\begin{example}[Derangements]
+    The exponential generating function for derangements is \(D(z) = \sum_{n \ge 0} d_n \frac{z^n}{n!} = \frac{e^{-z}}{1 - z}\).
+    Its only singularity in \(\mathbb{C}\) is a simple pole at \(z = 1\).
+    Applying \Cref{prop:rational-asymptotics} for any choice of radius \(R > 1\):
+    \[
+        \frac{d_n}{n!} = - \Res_{z = 1} \left( \frac{e^{-z}}{z^{n+1}(1 - z)} \right) + O(R^{-n}).
+    \]
+    Since \(z = 1\) is a simple pole, \(\Res_{z=1} \frac{e^{-z}}{z^{n+1}(1-z)} = \frac{e^{-1}}{1^{n+1}(-1)} = -e^{-1}\).
     Therefore,
-    \begin{align*}
-        [z^n] D(z) 
-        &= - \Res_{z = 1} \frac{D(z)}{z^{n+1}} + O(R^{-n}) \\
-        &= - \Res_{z = 1} \frac{e^{-z}}{z^{n+1}(1 - z)} + O(R^{-n}) \\
-        &= - \lim_{z \to 1} (z - 1) \frac{e^{-z}}{z^{n+1}(1 - z)} + O(R^{-n}) \\
-        &= e^{-1} + O(R^{-n}).
-    \end{align*}
-    Therefore, the probability that a random permutation of size \(n\) is a derangement tends to \(e^{-1}\) as \(n \to \infty\).
+    \[
+        \frac{d_n}{n!} = e^{-1} + O(R^{-n}) \to \frac{1}{e} \text{as } n \to \infty.
+    \]
+    Thus, the probability that a uniformly random permutation of size \(n\) has no fixed points rapidly approaches \(1/e\), with exponential convergence for any rate \(R > 1\).
 \end{example}
