@@ -1,0 +1,93 @@
+\lecture{7}{2026-09-23}{}
+
+The example from last lecture greatly generalizes.
+
+If \(F(z) = \sum_{n \geq 0} f_n z^n\) is analytic at \(z = 0\), then \((f_n)_{n \geq 0}\) grows at most exponentially.
+
+From the Cauchy Integral formula,
+\[
+    f_n = \frac{1}{2\pi i} \int_{|z| = r} \frac{F(z)}{z^{n+1}} \, dz,
+\]
+The Modulus Maximum Bound implies
+\begin{align*}
+    |f_n| &\leq \frac{1}{2\pi} \operatorname{length}(\{|z| = r\}) \cdot \max_{|z| = \epsilon} \left| \frac{F(z)}{r^{n+1}} \right| \\
+    &= \frac{M}{r^n},
+\end{align*}
+for some \(M > 0\) and all \(n \geq 0\).
+
+The \emph{exponential growth} of \((f_n)_{n \geq 0}\) is defined as
+\[
+    \rho = \limsup_{n \to \infty} |f_n|^{1/n}.
+\]
+
+For example, if \(f_n = 2^n\), then \(\rho = 2\).
+If \(f_n = 2^n(1 + (-1)^n)\), then \(\rho = 2\).
+
+Recall the Cauchy Root Test: 
+\(\rho = \frac{1}{R}\), where \(R\) is the radius of convergence of \(\sum_{n \geq 0} f_n z^n\).
+
+\begin{theorem}
+    \(\rho = \frac{1}{R}\), where \(R\) is the minimal modulus of a singularity of \(F(z)\).
+\end{theorem}
+
+\begin{example}[Binary trees]
+    Recall that the generating function of binary trees is \(B(z) = \frac{1 - \sqrt{1 - 4z}}{2z}\).
+    The singularity of \(B(z)\) is at \(z = \frac{1}{4}\), so the exponential growth of the number of binary trees is \(\rho = 4\).
+    Therefore, \(b_n = 4^n \cdot \Lambda(n)\), where \(\Lambda(n)\) is a subexponential factor.
+\end{example}
+
+\paragraph{First Principle of Analytic Combinatorics}
+The location of a generating function's singularities determines the exponential growth of its coefficients.
+
+\paragraph{Second Principle of Analytic Combinatorics}
+The \emph{nature} or \emph{type} of a generating function's singularities determines the subexponential growth of its coefficients.
+
+\begin{example}
+    If \(F(z) = \frac{1}{1 - 4z}\), then \(f_n = 4^n\).
+    If \(F(z) = \frac{1}{(1 - 4z)^2}\), then \(f_n = (n + 1) 4^n\).
+    If \(F(z) = \frac{1 - \sqrt{1 - 4z}}{2z}\), then \(f_n \sim \frac{4^n}{\sqrt{\pi n^3}}\).
+
+    All of these functions have a singularity at \(z = \frac{1}{4}\), which determines the exponential growth of their coefficients.
+    The nature of the singularity determines the subexponential growth of their coefficients.
+\end{example}
+
+\begin{proposition}
+    Suppose \(F(z) = \sum_{n \geq 0} f_n z^n\) is analytic on the circle \(\{|z| = R\}\) and analytic in \(\{|z| < R\}\) except at a finite number of distinct nonzero poles \(\sigma_1, \dots, \sigma_m\).
+    Then, there exist polynomials \(P_1, \dots, P_m\) such that
+    \[
+        f_n = \left(\sum_{k=1}^m P_k(n) \sigma_k^{-n}\right) + O(R^{-n}),
+    \]
+    where the degree of \(P_k\) is one less than the order of the pole at \(\sigma_k\).
+\end{proposition}
+
+\begin{proof}
+    \[
+        \underbrace{\int_{|z| = r} \frac{F(z)}{z^{n+1}} \, dz}_{O(R^{-n})} =
+        \underbrace{\Res_{z = 0} \frac{F(z)}{z^{n+1}}}_{f_n}
+        +
+        \sum_{k=1}^m \Res_{z = \sigma_k} \frac{F(z)}{z^{n+1}} + \int_{|z| = R} \frac{F(z)}{z^{n+1}} \, dz.
+    \]
+
+    It's sufficient to show that \(\Res_{z = \sigma_k} \frac{F(z)}{z^{n+1}} = P_k(n) \sigma_k^{-n}\) for some polynomial \(P_k\) of degree one less than the order of the pole at \(\sigma_k\).
+
+    If \(z = \sigma_k\) is a pole of order \(r\), then
+    \[
+        \Res_{z = \sigma_k} \frac{F(z)}{z^{n+1}} = \frac{1}{(r-1)!} \lim_{z \to \sigma_k} \frac{d^{r-1}}{dz^{r-1}} \left((z - \sigma_k)^r \frac{F(z)}{z^{n+1}}\right).
+    \]
+
+    Taking \(r-1\) derivatives gives a polynomial of degree \(r-1\) in \(n\), multiplied by \(\sigma_k^{-n}\).
+\end{proof}
+
+\begin{example}[Derrangements]
+    The exponential generating function of derangements is \(D(z) = \frac{e^{-z}}{1 - z}\).
+    The singularity of \(D(z)\) is at \(z = 1\), which is a simple pole.
+    Therefore,
+    \begin{align*}
+        [z^n] D(z) 
+        &= - \Res_{z = 1} \frac{D(z)}{z^{n+1}} + O(R^{-n}) \\
+        &= - \Res_{z = 1} \frac{e^{-z}}{z^{n+1}(1 - z)} + O(R^{-n}) \\
+        &= - \lim_{z \to 1} (z - 1) \frac{e^{-z}}{z^{n+1}(1 - z)} + O(R^{-n}) \\
+        &= e^{-1} + O(R^{-n}).
+    \end{align*}
+    Therefore, the probability that a random permutation of size \(n\) is a derangement tends to \(e^{-1}\) as \(n \to \infty\).
+\end{example}

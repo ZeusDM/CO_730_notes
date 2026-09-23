@@ -133,4 +133,21 @@ a function \(f\) is meromorphic at \(z = a\) if and only if there exists an open
         \frac{a_n}{n!} = 2\left( \frac{2}{\pi} \right)^{n+1} + 2\left( \frac{2}{3\pi} \right)^{n+1} + O(\tau^{-n}) \quad (n \text{ odd}).
     \]
     Taking \(\tau \to \infty\) yields the exact series \(\frac{a_n}{n!} = 2\left( \frac{2}{\pi} \right)^{n+1} \sum_{k=0}^{\infty} \frac{1}{(2k + 1)^{n+1}}\) for odd \(n\).
+
 \end{example}
+
+\begin{remark}
+    Note that \(\zeta(s) = \sum_{k=1}^{\infty} \frac{1}{k^s}\).
+    When is \(\zeta(n) \in \mathbb{Q}\), for positive integers \(n\)?
+    Now, for \(n\) odd, we have
+    \begin{align*}
+        \zeta(n+1) &= \sum_{k=1}^{\infty} \frac{1}{k^{n+1}} \\
+        &= \sum_{k=0}^{\infty} \frac{1}{(2k+1)^{n+1}} + \sum_{k=1}^{\infty} \frac{1}{(2k)^{n+1}} \\
+        &= \sum_{k=0}^{\infty} \frac{1}{(2k+1)^{n+1}} + \frac{1}{2^{n+1}} \sum_{k=1}^{\infty} \frac{1}{k^{n+1}} \\
+        &= \frac{a_n}{2 n!} + \frac{1}{2^{n+1}} \zeta(n+1),
+    \end{align*}
+    so
+    \[
+        \zeta(n+1) = \frac{2^{n+1}}{2^{n+1} - 1} \cdot \frac{a_n}{2 n!}.
+    \]
+\end{remark}
