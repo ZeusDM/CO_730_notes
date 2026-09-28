@@ -1,0 +1,207 @@
+\lecture{8}{2026-09-25}{Meromorphic and rational asymptotics}
+
+In the previous lecture, we established that polar singularities dictate sequence asymptotics via residue calculus, illustrating this with derangements.
+We begin by exploring further combinatorial applications of meromorphic asymptotics, then generalize our residue calculations to poles of higher order, and finally investigate the asymptotic theory of rational generating functions and \(C\)-finite sequences.
+
+\section*{Applications of meromorphic asymptotics}
+
+\begin{example}[Permutations without short cycles, {\cite[Example IV.16]{FlajoletSedgewick2009}}]
+    \label{ex:no-short-cycles}
+    Fix a positive integer \(r \ge 1\).
+    Let \(f_n^{(r)}\) denote the probability that a uniformly random permutation of size \(n\) has no cycles of length at most \(r\).
+
+    Using the labelled specification \(\mathcal{P}^{(r)} = \operatorname{SET}(\operatorname{CYC}_{> r}(\mathcal{Z}))\), the generating function is
+    \[
+        F(z) = \exp\left( \sum_{k > r} \frac{z^k}{k} \right) = \exp\left( \ln\left( \frac{1}{1-z} \right) - \sum_{k=1}^r \frac{z^k}{k} \right) = \frac{\exp\left( -\sum_{k=1}^r \frac{z^k}{k} \right)}{1-z},
+    \]
+    so the probability is \(f_n^{(r)} = [z^n] F(z)\).
+
+    For any \(R > 1\), \(F(z)\) is analytic in \(\{|z| \le R\}\) except for a simple pole at \(z = 1\).
+    Applying \Cref{prop:rational-asymptotics}:
+    \[
+        f_n^{(r)} = - \Res_{z=1} \left( \frac{F(z)}{z^{n+1}} \right) + O(R^{-n}) \to \exp\left( -\sum_{k=1}^r \frac{1}{k} \right) = e^{-H_r} \quad \text{as } n \to \infty,
+    \]
+    where \(H_r = \sum_{k=1}^r \frac{1}{k}\) is the \(r\)-th harmonic number.
+    When \(r = 1\), this recovers the derangements limit \(e^{-1}\).
+\end{example}
+
+\begin{example}[Asymptotics of surjections, {\cite[Example 2.3]{Melczer2021}, \cite[Example IV.17]{FlajoletSedgewick2009}}]
+    \label{ex:surjections}
+    A \emph{surjection} of size \(n\) is a surjective function from \([n] = \{1, \dots, n\}\) onto \([r] = \{1, \dots, r\}\) for some \(r \ge 1\).
+    In the labelled framework, surjections correspond to ordered sequences of non-empty blocks, \(\mathcal{S} = \operatorname{SEQ}(\operatorname{SET}_{\ge 1}(\mathcal{Z}))\), with exponential generating function
+    \[
+        S(z) = \sum_{n \ge 0} S_n \frac{z^n}{n!} = \frac{1}{1 - (e^z - 1)} = \frac{1}{2 - e^z}.
+    \]
+    The singularities are the roots of \(2 - e^z = 0\), namely \(z = \ln 2 + 2\pi i k\) (\(k \in \mathbb{Z}\)).
+    The dominant singularity is the simple pole at \(z = \ln 2\).
+    By \Cref{lem:quotient-poles},
+    \[
+        [z^n] S(z) \sim - \Res_{z = \ln 2} \left( \frac{1}{(2 - e^z) z^{n+1}} \right) = \frac{1}{2}\left( \frac{1}{\ln 2} \right)^{n+1},
+    \]
+    which yields the asymptotic formula for the number of surjections:
+    \[
+        S_n \sim \frac{n!}{2} \left( \frac{1}{\ln 2} \right)^{n+1}.
+    \]
+\end{example}
+
+So far, all dominant singularities in our examples have been simple poles.
+When a generating function has a pole of order \(k \ge 1\), the residue calculation involves \(k-1\) derivatives, which introduces polynomial growth in \(n\).
+
+\begin{lemma}[Residue at a pole of order \(k\), {\cite[Lemma 2.4]{Melczer2021}}]
+    \label{lem:higher-order-pole}
+    Let \(z = \sigma\) be a pole of order \(k \ge 1\) of \(F(z)\), so that in a neighborhood of \(\sigma\) we can write
+    \[
+        F(z) = \frac{G(z)}{H(z)},
+    \]
+    where \(G\) and \(H\) are analytic at \(z = \sigma\), with \(G(\sigma) \neq 0\), \(H^{(k)}(\sigma) \neq 0\), and
+    \[
+        H(\sigma) = H'(\sigma) = \dots = H^{(k-1)}(\sigma) = 0.
+    \]
+    Then
+    \[
+        \Res_{z = \sigma} \left( \frac{F(z)}{z^{n+1}} \right) = \sigma^{-n} P(n),
+    \]
+    where \(P(n)\) is a polynomial in \(n\) of degree \(k-1\) whose leading term is
+    \[
+        P(n) = (-1)^{k-1} \frac{k \, G(\sigma)}{\sigma^k H^{(k)}(\sigma)} n^{k-1} + O(n^{k-2}).
+    \]
+\end{lemma}
+
+\begin{proof}
+    Expanding \(H(z) = \frac{H^{(k)}(\sigma)}{k!} (z - \sigma)^k + O((z - \sigma)^{k+1})\) around \(z = \sigma\), the residue formula gives
+    \[
+        \Res_{z = \sigma} \left( \frac{F(z)}{z^{n+1}} \right) = \frac{1}{(k-1)!} \lim_{z \to \sigma} \frac{d^{k-1}}{dz^{k-1}} \left[ \frac{G(z)}{H(z)/(z - \sigma)^k} z^{-(n+1)} \right].
+    \]
+    By Leibniz's rule, differentiating \(z^{-(n+1)}\) repeatedly gives
+    \[
+        \frac{d^{k-1}}{dz^{k-1}} \left( z^{-(n+1)} \right) = (-1)^{k-1} (n+1)\dots(n+k-1) z^{-(n+k)},
+    \]
+    whose evaluation at \(z = \sigma\) has leading term \((-1)^{k-1} n^{k-1} \sigma^{-(n+k)}\).
+    Evaluating the remaining factor at \(z = \sigma\) gives \(\lim_{z \to \sigma} \frac{G(z)}{H(z)/(z - \sigma)^k} = \frac{k! \, G(\sigma)}{H^{(k)}(\sigma)}\).
+    Dividing by \((k-1)!\) yields
+    \[
+        \Res_{z = \sigma} \left( \frac{F(z)}{z^{n+1}} \right) = \sigma^{-n} \left[ (-1)^{k-1} \frac{k \, G(\sigma)}{\sigma^k H^{(k)}(\sigma)} n^{k-1} + O(n^{k-2}) \right].
+    \]
+    Setting \(P(n)\) to the bracketed polynomial completes the proof.
+\end{proof}
+
+
+\section*{Classes of generating functions}
+
+It might appear that the residue theorem allows us to extract asymptotics for arbitrary meromorphic functions.
+However, locating singularities and determining their orders is in general non-trivial, and many functions are not meromorphic.
+To systematically navigate analytic combinatorics, generating functions are organized into a nested hierarchy of function classes:
+\[
+    \text{Rational} \subset \text{Algebraic} \subset \text{$D$-finite} \subset \text{$D$-algebraic}.
+\]
+\begin{itemize}
+    \item \textbf{Rational}: Ratios of two polynomials, \(F(z) = G(z)/H(z)\). Their coefficients satisfy linear recurrences with constant coefficients.
+    \item \textbf{Algebraic}: Functions satisfying a polynomial equation \(P(z, F(z)) = 0\). Their singularities are branch points and poles.
+    \item \textbf{$D$-finite} (Differentially finite): Functions satisfying a linear differential equation with polynomial coefficients:
+    \[
+        p_k(z) F^{(k)}(z) + \dots + p_1(z) F'(z) + p_0(z) F(z) = 0.
+    \]
+    Equivalently, their coefficient sequences \((f_n)\) satisfy linear recurrences with polynomial coefficients in \(n\) (\emph{\(P\)-recursive}).
+    \item \textbf{$D$-algebraic} (Differentially algebraic): Functions satisfying an algebraic differential equation \(P(z, F(z), F'(z), \dots, F^{(k)}(z)) = 0\).
+\end{itemize}
+
+Before studying branch points and differential equations, we focus on the foundational class: \textbf{rational generating functions}.
+
+\section*{Rational generating functions and \(C\)-finite sequences}
+
+\begin{definition}[\(C\)-finite sequence, {\cite[Definition 2.7]{Melczer2021}}]
+    A sequence \((f_n)_{n \ge 0}\) is \emph{\(C\)-finite} (or \emph{constant-recursive}) of order \(r \ge 1\) if it satisfies a linear recurrence relation with constant coefficients:
+    \begin{equation}
+        \label{eq:c-finite-rec}
+        f_n + c_1 f_{n-1} + \dots + c_r f_{n-r} = 0 \quad \text{for all } n \ge r,
+    \end{equation}
+    where \(c_1, \dots, c_r\) are constants with \(c_r \neq 0\).
+\end{definition}
+
+\begin{lemma}[{\cite[Theorem 2.2]{Melczer2021}}]
+    \label{lem:c-finite-rational}
+    A sequence \((f_n)_{n \ge 0}\) is \(C\)-finite if and only if its generating function \(F(z) = \sum_{n \ge 0} f_n z^n\) is rational.
+    More precisely, \((f_n)\) satisfies \eqref{eq:c-finite-rec} if and only if
+    \[
+        F(z) = \frac{G(z)}{1 + c_1 z + \dots + c_r z^r}
+    \]
+    for some polynomial \(G(z)\) of degree at most \(r-1\).
+\end{lemma}
+
+\begin{proof}
+    Setting \(H(z) = 1 + c_1 z + \dots + c_r z^r\), extracting the coefficient of \(z^N\) in \(H(z) F(z)\) gives
+    \[
+        [z^N] \left( H(z) F(z) \right) = f_N + c_1 f_{N-1} + \dots + c_r f_{N-r}.
+    \]
+    This vanishes for all \(N \ge r\) if and only if \((f_n)\) satisfies \eqref{eq:c-finite-rec}, which occurs if and only if \(G(z) = H(z) F(z)\) is a polynomial of degree at most \(r-1\).
+\end{proof}
+
+Let \(F(z) = \frac{G(z)}{H(z)}\) be a rational generating function with \(\gcd(G, H) = 1\) and \(H(0) = 1\).
+Over \(\mathbb{C}\), the denominator factors completely as
+\[
+    H(z) = C \prod_{j=1}^s (z - \lambda_j)^{d_j},
+\]
+where \(\lambda_1, \dots, \lambda_s\) are the distinct nonzero roots of \(H(z)\) with multiplicities \(d_j \ge 1\).
+Each root \(\lambda_j\) is a pole of \(F(z)\) of order \(d_j\).
+
+\begin{corollary}[Exact representation of \(C\)-finite sequences, {\cite[Theorem 2.3]{Melczer2021}}]
+    If \((f_n)\) satisfies the recurrence \eqref{eq:c-finite-rec}, then there exist polynomials \(P_1, \dots, P_s\) such that
+    \[
+        f_n = \sum_{j=1}^s P_j(n) \lambda_j^{-n} \quad \text{for all } n \ge 0,
+    \]
+    where each \(P_j(n)\) is a polynomial in \(n\) of degree \(d_j - 1\).
+\end{corollary}
+
+When we are interested in asymptotic behavior as \(n \to \infty\), the sum is dominated by the roots of minimal modulus (the dominant singularities).
+
+\begin{corollary}[Single dominant root of minimal modulus]
+    Order the roots by modulus: \(|\lambda_1| \le |\lambda_2| \le \dots \le |\lambda_s|\).
+    Suppose that \(|\lambda_1| < |\lambda_k|\) for all \(k \ge 2\).
+    Then
+    \[
+        f_n = P_1(n) \lambda_1^{-n} + O(\omega^{-n} n^{\alpha - 1}),
+    \]
+    where \(\omega = \min_{2 \le k \le s} |\lambda_k| > |\lambda_1|\) and \(\alpha\) is the maximum multiplicity among roots with modulus \(\omega\).
+\end{corollary}
+
+When there are multiple roots on the circle of convergence \(|z| = |\lambda_1|\), the pole of highest multiplicity dominates:
+
+\begin{corollary}[Dominant pole of maximal multiplicity, {\cite[Theorem IV.9]{FlajoletSedgewick2009}}]
+    \label{cor:dominant-pole-mult}
+    Suppose that \(|\lambda_1| \le |\lambda_k|\) for all \(k = 2, \dots, s\), and \(\lambda_1\) has multiplicity \(m\) strictly greater than the multiplicity of any other root with modulus \(|\lambda_1|\) (i.e., if \(|\lambda_k| = |\lambda_1|\) for \(k \ge 2\), then \(d_k < m\)).
+    Then
+    \[
+        f_n = (-1)^m \frac{m \, G(\lambda_1)}{\lambda_1^m H^{(m)}(\lambda_1)} n^{m-1} \lambda_1^{-n} + O(\lambda_1^{-n} n^{m-2}).
+    \]
+\end{corollary}
+
+\begin{proof}
+    By \Cref{prop:rational-asymptotics}, \(f_n = - \sum_{j=1}^s \Res_{z = \lambda_j} \left( \frac{F(z)}{z^{n+1}} \right)\).
+    By \Cref{lem:higher-order-pole}, the contribution of \(\lambda_1\) is
+    \begin{align*}
+        - \Res_{z = \lambda_1} \left( \frac{F(z)}{z^{n+1}} \right)
+        &= - (-1)^{m-1} \frac{m \, G(\lambda_1)}{\lambda_1^m H^{(m)}(\lambda_1)} n^{m-1} \lambda_1^{-n} + O(n^{m-2} \lambda_1^{-n}) \\
+        &= (-1)^m \frac{m \, G(\lambda_1)}{\lambda_1^m H^{(m)}(\lambda_1)} n^{m-1} \lambda_1^{-n} + O(n^{m-2} \lambda_1^{-n}).
+    \end{align*}
+    Any other root \(\lambda_k\) on the circle \(|\lambda_k| = |\lambda_1|\) has multiplicity \(d_k \le m-1\), so its contribution is bounded by \(O(n^{d_k-1} |\lambda_1|^{-n}) = O(n^{m-2} |\lambda_1|^{-n})\).
+    Any root with \(|\lambda_k| > |\lambda_1|\) decays exponentially faster.
+    Combining these estimates proves the claim.
+\end{proof}
+
+\begin{example}[Integer partitions with parts at most \(3\), {\cite[Example IV.6]{FlajoletSedgewick2009}}]
+    \label{ex:partitions-3}
+    Let \(p_n\) denote the number of integer partitions of \(n\) into parts of size at most \(3\) (parts in \(\{1, 2, 3\}\)).
+    Its generating function is
+    \[
+        F(z) = \frac{1}{(1-z)(1-z^2)(1-z^3)}.
+    \]
+    The singularities are roots of unity on \(|z| = 1\):
+    \(z = 1\) is a pole of order \(3\) (a root of each factor), while \(-1\) and \(e^{\pm 2\pi i/3}\) are simple poles.
+    Since \(z = 1\) is the unique pole of maximal multiplicity \(m = 3\), it dictates dominant asymptotics.
+    
+    Expanding the denominator \(H(z) = (1-z)(1-z^2)(1-z^3) = 1 - z - z^2 + z^4 + z^5 - z^6\), differentiating three times yields \(H'''(1) = -36\).
+    Applying \Cref{cor:dominant-pole-mult} with \(m = 3\), \(\lambda_1 = 1\), and \(G(1) = 1\):
+    \[
+        p_n = (-1)^3 \frac{3 \cdot 1}{1^3 \cdot (-36)} n^2 + O(n) = \frac{-3}{-36} n^2 + O(n) = \frac{n^2}{12} + O(n).
+    \]
+\end{example}
