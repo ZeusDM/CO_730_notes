@@ -1,0 +1,94 @@
+\lecture{8}{2026-09-28}{}
+
+For a rational function, it's ``easy'' to find asymptotics if:
+\begin{itemize}
+    \item unique root closest to the origin, or
+    \item among the roots closest to the origin, there is a unique root of maximal multiplicity.
+\end{itemize}
+
+How do I find the roots closest to the origin? What is the complexity of finding asymptoptics?
+
+\begin{theorem}[Vivandi--Pringsheim Theorem]
+    If \(F(z) = \sum_{n=0}^{\infty} f_n z^n\) where \(f_n \geq 0\) for all \(n\), then one of its singularities of minimal modulus is a positive real number.
+\end{theorem}
+
+\begin{proof}
+    If \(f_n \geq 0\), then
+    \[
+    |F(z)| = \left| \sum_{n=0}^{\infty} f_n z^n \right| \leq \sum_{n=0}^{\infty} f_n |z|^n = F(|z|).
+    \]
+
+    Thus, if \(\omega\) is a pole singularity of \(F(z)\) of minimal modulus, then if \(z_n \to \omega\) inside the domain of convergence, we have \(|F(z_n)| \to \infty\).
+    But then \(|F(|z_n|)| \to \infty\) as well, so \(|z_n| \to |\omega|\).
+    Thus, \(|\omega|\) is a singularity of minimal modulus, and \(|\omega|\) is a positive real number.
+\end{proof}
+
+
+An open problem:
+Is there an algorithm that takes a C-finite sequence and determines whether there exists an index \(r\) such that \(a_r = 0\)?
+
+Order 1 and 2 are trivial. Orders 3 and 4 were done in the 1980s. Order 5 and more is open.
+Simple recurrences, 2022, under number theory assumptions
+
+Other open problems:
+Does there exist an algorithm that takes a C-finite sequence and determines if \(f_n \geq 0\) for all but finitely many \(n\)?
+This is known for order at most \(5\) and for simple recurrences.
+
+\begin{definition}[\(\mathbb{N}\)-rational sequence]
+    The set of \(\mathbb{N}\)-rational sequences is the set of sequences:
+    \begin{itemize}
+        \item containing \(1\) and \(z\),
+        \item closed under addition and multiplication,
+        \item closed under the operation \(f \maps \frac{1}{1 - zf}\).
+    \end{itemize}
+\end{definition}
+
+These are the generating functions of regular languages.
+
+\begin{theorem}[Berstel]
+    If \(F(z)\) is \(\mathbb{N}\)-rational, then its dominant singularities consist of some \(\rho\) and (potentially) some \(\rho \zeta_1, \ldots, \rho \zeta_s\) where \(\zeta_i\) are roots of unity.
+\end{theorem}
+
+\begin{example}
+    Let \(\theta = \arccos(1/3)\).
+    Then,
+    \begin{align*}
+        F(z) &= \frac{2(1+3z)^2}{(1-9z)(1+14z+81z^2)} \\
+        &= \frac{1/2}{1-9z^{2i\theta}} + \frac{1/2}{1-9z^{-2i\theta}} - \frac{1}{1-9z},
+    \end{align*}
+    which is not \(\mathbb{N}\)-rational because \(e^{2i\theta}\) is not a root of unity.
+    Nevertheless, its coefficients are nonnegative integers.
+\end{example}
+
+\begin{corollary}
+    If \(F\) is \(\mathbb{N}\)-rational, then there exists \(p > 0\)
+    such that
+    \[
+        F(z) = S_0(z^p) + z S_1(z^p) + \cdots + z^{p-1} S_{p-1}(z^p),
+    \]
+    where \(S_0, \ldots, S_{p-1}\) are \(\mathbb{N}\)-rational and have a unique dominant singularity.
+\end{corollary}
+
+\begin{theorem}[``Meta Theorem'']
+    Any ``naturally occurring'' rational combinatorial generating function is \(\mathbb{N}\)-rational.
+\end{theorem}
+
+How fast can we find asymptotics?
+
+The most expensive step is finding the roots of minimal modulus.
+
+Let \(P(z) \in \mathbb{Z}[z]\) be a polynomial of degree \(d\) with coefficients of size at most \(2^h\).
+
+\begin{lemma}
+    If \(P(\alpha) = P(\beta) = 0\), and \(\alpha \neq \beta\), then \(|\alpha - \beta| \geq D_d 2^{-h(d-1)} \), where \(D_d\) is a polynomial in \(d\) of degree \(O(d)\).
+\end{lemma}
+
+Therefore, we need to the order of \(hd\) bits of precision to find the roots of \(P\) to sufficient accuracy to distinguish them.
+
+For our asymptotics, we need to separate the moduli of the roots, i.e., 
+\[
+    \big| |\alpha| - |\beta| \big| \geq \text{something}.
+\]
+This is still pretty open.
+
+Next time, we'll finish this.
