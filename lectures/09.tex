@@ -1,94 +1,131 @@
-\lecture{8}{2026-09-28}{}
+\lecture{9}{2026-09-28}{Dominant singularities and \texorpdfstring{\(\mathbb{N}\)}{N}-rational functions}
 
-For a rational function, it's ``easy'' to find asymptotics if:
+For a rational generating function, determining coefficient asymptotics is straightforward in two favorable cases:
 \begin{itemize}
-    \item unique root closest to the origin, or
-    \item among the roots closest to the origin, there is a unique root of maximal multiplicity.
+    \item there is a unique root of the denominator closest to the origin; or
+    \item among the roots of minimal modulus, there is a unique root of maximal multiplicity.
 \end{itemize}
+This raises two natural algorithmic questions: how do we identify the roots of minimal modulus, and what is the computational complexity of extracting dominant asymptotics?
 
-How do I find the roots closest to the origin? What is the complexity of finding asymptoptics?
 
-\begin{theorem}[Vivandi--Pringsheim Theorem]
-    If \(F(z) = \sum_{n=0}^{\infty} f_n z^n\) where \(f_n \geq 0\) for all \(n\), then one of its singularities of minimal modulus is a positive real number.
+\section*{The Vivanti--Pringsheim theorem}
+
+When a sequence has non-negative coefficients, the search for dominant singularities is greatly simplified by locating real positive singularities.
+
+\begin{theorem}[Vivanti--Pringsheim Theorem, {\cite[Proposition 2.4]{Melczer2021}}]
+    \label{thm:vivanti-pringsheim}
+    Let \(F(z) = \sum_{n \ge 0} f_n z^n\) have radius of convergence \(R > 0\).
+    If \(f_n \ge 0\) for all \(n \ge 0\), then \(z = R\) is a singularity of \(F(z)\).
+    In other words, at least one singularity of minimal modulus is a positive real number.
 \end{theorem}
 
 \begin{proof}
-    If \(f_n \geq 0\), then
+    Since \(f_n \ge 0\) for all \(n\), the triangle inequality yields
     \[
-    |F(z)| = \left| \sum_{n=0}^{\infty} f_n z^n \right| \leq \sum_{n=0}^{\infty} f_n |z|^n = F(|z|).
+        |F(z)| = \left| \sum_{n=0}^{\infty} f_n z^n \right| \le \sum_{n=0}^{\infty} f_n |z|^n = F(|z|)
     \]
-
-    Thus, if \(\omega\) is a pole singularity of \(F(z)\) of minimal modulus, then if \(z_n \to \omega\) inside the domain of convergence, we have \(|F(z_n)| \to \infty\).
-    But then \(|F(|z_n|)| \to \infty\) as well, so \(|z_n| \to |\omega|\).
-    Thus, \(|\omega|\) is a singularity of minimal modulus, and \(|\omega|\) is a positive real number.
+    for all \(z\) in the open disk of convergence \(\{|z| < R\}\).
+    If \(\omega\) is a polar singularity of \(F(z)\) of minimal modulus \(|\omega| = R\), then approaching \(\omega\) from within the disk of convergence yields \(|F(z_k)| \to \infty\) along some sequence \(z_k \to \omega\).
+    Because \(F(|z_k|) \ge |F(z_k)|\), it follows that \(F(|z_k|) \to \infty\) as \(|z_k| \to R\).
+    Thus, \(z = R = |\omega|\) must be a singularity of \(F(z)\).
 \end{proof}
 
 
-An open problem:
-Is there an algorithm that takes a C-finite sequence and determines whether there exists an index \(r\) such that \(a_r = 0\)?
+\section*{Decidability problems for \(C\)-finite sequences}
 
-Order 1 and 2 are trivial. Orders 3 and 4 were done in the 1980s. Order 5 and more is open.
-Simple recurrences, 2022, under number theory assumptions
+Although rational functions admit explicit formulas for their coefficients, basic algorithmic decision problems about \(C\)-finite sequences remain surprisingly deep.
 
-Other open problems:
-Does there exist an algorithm that takes a C-finite sequence and determines if \(f_n \geq 0\) for all but finitely many \(n\)?
-This is known for order at most \(5\) and for simple recurrences.
-
-\begin{definition}[\(\mathbb{N}\)-rational sequence]
-    The set of \(\mathbb{N}\)-rational sequences is the set of sequences:
+\begin{remark}[Skolem's problem, {\cite[Open Problem 2.1]{Melczer2021}}]
+    Is there an algorithm that takes a \(C\)-finite sequence \((f_n)\) over \(\mathbb{Q}\) and decides whether there exists an index \(n\) such that \(f_n = 0\)?
     \begin{itemize}
-        \item containing \(1\) and \(z\),
-        \item closed under addition and multiplication,
-        \item closed under the operation \(f \maps \frac{1}{1 - zf}\).
+        \item Recurrences of order \(1\) and \(2\) are trivial.
+        \item Recurrences of orders \(3\) and \(4\) were proven decidable in the 1980s by Mignotte et al.\ and Vereshchagin.
+        \item Recurrences of order \(5\) and higher remain open in general.
+        For simple recurrences, decidability for prime power indices was established in 2022 (Kenison et al.) under standard number-theoretic conjectures.
+    \end{itemize}
+\end{remark}
+
+\begin{remark}[Ultimate positivity, {\cite[Open Problem 2.2]{Melczer2021}}]
+    Does there exist an algorithm that takes a \(C\)-finite sequence \((f_n)\) over \(\mathbb{Q}\) and decides whether \(f_n \ge 0\) for all but finitely many \(n\) (i.e., whether \((f_n)\) is eventually non-negative)?
+    \begin{itemize}
+        \item Decidability is known for rational functions with denominators of degree at most \(5\), and for arbitrary degree when the denominator is square-free (Ouaknine and Worrell).
+        \item Degree \(6\) and above remains open in general.
+    \end{itemize}
+\end{remark}
+
+
+\section*{\texorpdfstring{$\mathbb{N}$}{N}-rational functions}
+
+Combinatorial sequences naturally avoid such pathological undecidability behavior because their generating functions belong to a well-behaved subclass of rational series.
+
+\begin{definition}[\(\mathbb{N}\)-rational functions, {\cite[Definition 2.8]{Melczer2021}}]
+    \label{def:n-rational}
+    The set of \emph{\(\mathbb{N}\)-rational functions} is the smallest set of functions:
+    \begin{itemize}
+        \item containing the constant \(1\) and the variable \(z\);
+        \item closed under addition and multiplication;
+        \item closed under the quasi-inverse operation \(f \mapsto \frac{1}{1 - zf}\).
     \end{itemize}
 \end{definition}
 
-These are the generating functions of regular languages.
+In formal language theory, \(\mathbb{N}\)-rational functions are precisely the generating functions of regular languages counted by word length.
 
-\begin{theorem}[Berstel]
-    If \(F(z)\) is \(\mathbb{N}\)-rational, then its dominant singularities consist of some \(\rho\) and (potentially) some \(\rho \zeta_1, \ldots, \rho \zeta_s\) where \(\zeta_i\) are roots of unity.
+\begin{theorem}[Berstel's Theorem, {\cite[Proposition 2.6]{Melczer2021}}]
+    \label{thm:berstel}
+    If \(F(z)\) is an \(\mathbb{N}\)-rational function, then every dominant singularity of \(F(z)\) has the form \(\rho \zeta\), where \(\rho > 0\) is the radius of convergence and \(\zeta\) is a root of unity.
+    In particular, all dominant singularities are contained in a set \(\{\rho, \rho \zeta_1, \dots, \rho \zeta_s\}\) with \(\zeta_j\) roots of unity.
 \end{theorem}
 
-\begin{example}
-    Let \(\theta = \arccos(1/3)\).
-    Then,
+\begin{example}[A non-\(\mathbb{N}\)-rational series with non-negative coefficients, {\cite[Example 2.6]{Melczer2021}}]
+    Let \(\theta = \arccos(1/3)\), and consider the rational function
     \begin{align*}
         F(z) &= \frac{2(1+3z)^2}{(1-9z)(1+14z+81z^2)} \\
-        &= \frac{1/2}{1-9z^{2i\theta}} + \frac{1/2}{1-9z^{-2i\theta}} - \frac{1}{1-9z},
+        &= \frac{1/2}{1 - 9z e^{2i\theta}} + \frac{1/2}{1 - 9z e^{-2i\theta}} + \frac{1}{1 - 9z}.
     \end{align*}
-    which is not \(\mathbb{N}\)-rational because \(e^{2i\theta}\) is not a root of unity.
-    Nevertheless, its coefficients are nonnegative integers.
+    The dominant singularities are \(z = 1/9\) and \(z = \frac{1}{9} e^{\pm 2i\theta}\).
+    Because \(e^{2i\theta}\) is not a root of unity, \(F(z)\) is not \(\mathbb{N}\)-rational by \Cref{thm:berstel}.
+    Nevertheless, its power series coefficients satisfy
+    \[
+        [z^n] F(z) = 9^n \left( 1 + \cos(2n\theta) \right) \ge 0,
+    \]
+    and are integers because the denominator of \(F(z)\) has integer coefficients with constant term \(1\).
 \end{example}
 
-\begin{corollary}
-    If \(F\) is \(\mathbb{N}\)-rational, then there exists \(p > 0\)
-    such that
+\begin{corollary}[Multisection of \(\mathbb{N}\)-rational functions]
+    \label{cor:n-rational-multisection}
+    If \(F(z)\) is \(\mathbb{N}\)-rational, then there exists an integer \(p \ge 1\) such that \(F(z)\) can be decomposed as
     \[
-        F(z) = S_0(z^p) + z S_1(z^p) + \cdots + z^{p-1} S_{p-1}(z^p),
+        F(z) = S_0(z^p) + z S_1(z^p) + \dots + z^{p-1} S_{p-1}(z^p),
     \]
-    where \(S_0, \ldots, S_{p-1}\) are \(\mathbb{N}\)-rational and have a unique dominant singularity.
+    where each \(S_0, \dots, S_{p-1}\) is \(\mathbb{N}\)-rational and has a unique dominant singularity.
 \end{corollary}
 
-\begin{theorem}[``Meta Theorem'']
-    Any ``naturally occurring'' rational combinatorial generating function is \(\mathbb{N}\)-rational.
-\end{theorem}
+\begin{remark}[Combinatorial meta-theorem]
+    Every ``naturally occurring'' rational generating function arising from a combinatorial class is \(\mathbb{N}\)-rational.
+    Consequently, dominant singularities in combinatorial enumeration differ by roots of unity, and periodic asymptotic behavior can be effectively decoupled via multisection.
+\end{remark}
 
-How fast can we find asymptotics?
 
-The most expensive step is finding the roots of minimal modulus.
+\section*{Root separation and computational complexity}
 
-Let \(P(z) \in \mathbb{Z}[z]\) be a polynomial of degree \(d\) with coefficients of size at most \(2^h\).
+How efficiently can we extract asymptotics for rational generating functions?
+The most computationally intensive step is separating and identifying the roots of the denominator of minimal modulus.
 
-\begin{lemma}
-    If \(P(\alpha) = P(\beta) = 0\), and \(\alpha \neq \beta\), then \(|\alpha - \beta| \geq D_d 2^{-h(d-1)} \), where \(D_d\) is a polynomial in \(d\) of degree \(O(d)\).
+Let \(P(z) \in \mathbb{Z}[z]\) be a polynomial of degree \(d\) whose coefficients have bit size at most \(h\) (height bounded by \(2^h\)).
+
+\begin{lemma}[Root separation bound]
+    \label{lem:root-separation}
+    If \(\alpha \neq \beta\) are distinct roots of \(P(z)\), then
+    \[
+        |\alpha - \beta| \ge D_d \, 2^{-h(d-1)},
+    \]
+    where \(D_d\) is a constant depending on \(d\) that satisfies \(D_d = d^{-O(d)}\).
 \end{lemma}
 
-Therefore, we need to the order of \(hd\) bits of precision to find the roots of \(P\) to sufficient accuracy to distinguish them.
+Therefore, distinguishing distinct roots of \(P(z)\) requires on the order of \(O(hd)\) bits of precision.
 
-For our asymptotics, we need to separate the moduli of the roots, i.e., 
+For coefficient asymptotics, however, we must separate not just distinct roots, but their \emph{moduli}:
 \[
-    \big| |\alpha| - |\beta| \big| \geq \text{something}.
+    \big| |\alpha| - |\beta| \big| \ge \Delta(d, h) \quad \text{whenever } |\alpha| \neq |\beta|.
 \]
-This is still pretty open.
-
-Next time, we'll finish this.
+Effective lower bounds on root modulus separation are significantly more delicate, and this problem remains an active area of investigation.
