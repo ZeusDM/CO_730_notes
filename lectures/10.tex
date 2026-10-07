@@ -1,0 +1,111 @@
+\lecture{10}{2026-09-30}{Root separation, disproving \texorpdfstring{\(C\)}{C}-finiteness, and singular transfer}
+
+In the previous lecture, we saw that determining dominant asymptotics of a rational generating function reduces to identifying the roots of its denominator of minimal modulus.
+Today, we establish lower bounds on the separation of root \emph{moduli}, analyze the bit complexity of finding dominant singularities, and discuss how asymptotic expansions can be used to disprove \(C\)-finiteness.
+Finally, we transition to algebraic and \(D\)-finite generating functions and preview their singularity transfer theorems.
+
+
+\section*{Separation bounds for polynomial roots and moduli}
+
+Let \(P(z) \in \mathbb{Z}[z]\) be a polynomial of degree \(d\) whose coefficients have bit size at most \(h\) (that is, its height satisfies \(\max_j |c_j| \le 2^h\)).
+Recall from \Cref{lem:root-separation} that distinct roots \(\alpha \neq \beta\) satisfy the classical separation bound of Mahler and Mignotte:
+\[
+    |\alpha - \beta| \ge D_d \, 2^{-h(d-1)},
+\]
+where \(D_d = d^{-O(d)}\).
+Consequently, isolating distinct roots into disjoint open disks requires roughly \(O(hd)\) bits of precision.
+
+For dominant asymptotics, however, separating distinct roots is not enough: we must separate their \emph{moduli}.
+When \(|\alpha| \neq |\beta|\), effective lower bounds on \(\big| |\alpha| - |\beta| \big|\) depend on whether the roots are real or complex.
+
+\begin{lemma}[Modulus separation bounds]
+    \label{lem:modulus-separation}
+    Let \(P(z) \in \mathbb{Z}[z]\) have degree \(d\) and coefficient size at most \(2^h\).
+    For distinct root moduli \(|\alpha| \neq |\beta|\):
+    \begin{itemize}
+        \item \textbf{Both roots real} (\(\alpha, \beta \in \mathbb{R}\)):
+        \(\big| |\alpha| - |\beta| \big| \ge A_d \, 2^{-h(d-1)}\).
+        \item \textbf{One real, one complex} (\(\alpha \in \mathbb{R}, \beta \in \mathbb{C}\)):
+        \(\big| |\alpha| - |\beta| \big| \ge B_d \, 2^{-2h(d-1)(d-2)}\).
+        \item \textbf{General complex roots} (\(\alpha, \beta \in \mathbb{C}\)):
+        \(\big| |\alpha| - |\beta| \big| \ge C_d \, 2^{-h(d-1)(d-2)(d-3)/2}\).
+    \end{itemize}
+    Here \(A_d, B_d, C_d\) are explicit constants depending only on \(d\).
+\end{lemma}
+
+Distinguishing moduli in the general complex case requires a factor of \(d\) to \(d^2\) more bits of precision than isolating the roots themselves.
+
+\begin{corollary}[Bit complexity of finding dominant singularities]
+    \label{cor:dominant-singularity-complexity}
+    Let \(P(z) \in \mathbb{Z}[z]\) have degree \(d\) and height at most \(2^h\).
+    \begin{itemize}
+        \item All roots of minimal modulus of \(P(z)\) can be identified in \(\widetilde{O}(h d^4)\) bit operations, where \(\widetilde{O}\) suppresses polylogarithmic factors.
+        \item If \(F(z) = G(z)/H(z) = \sum_{n \ge 0} f_n z^n\) is a rational generating function with \(f_n \ge 0\) for all \(n\), then by the Vivanti--Pringsheim theorem (\Cref{thm:vivanti-pringsheim}), a dominant singularity lies on the positive real axis.
+        Consequently, dominant asymptotics can be determined in \(\widetilde{O}(h d^3)\) bit operations.
+    \end{itemize}
+\end{corollary}
+
+
+\section*{Disproving \(C\)-finiteness through asymptotics}
+
+The asymptotic structure of \(C\)-finite sequences is highly constrained: every \(C\)-finite sequence \((f_n)\) has an asymptotic expansion of the form
+\[
+    f_n = \sum_{j=1}^m P_j(n) \, \lambda_j^{-n} + O(\dots),
+\]
+where \(\lambda_j\) are the dominant poles of the generating function and each \(P_j(n)\) is a polynomial.
+In particular, the subexponential factor is always polynomial in \(n\).
+Comparing a sequence's asymptotic growth against this template provides an effective method to disprove \(C\)-finiteness (and thereby establish irrationality of generating functions).
+
+\begin{example}[Catalan numbers]
+    The Catalan numbers \(C_n = \frac{1}{n+1} \binom{2n}{n}\) have generating function
+    \[
+        C(z) = \frac{1 - \sqrt{1 - 4z}}{2z}.
+    \]
+    By Stirling's approximation, their asymptotic behavior is
+    \[
+        C_n \sim \frac{4^n}{\sqrt{\pi n^3}} = \frac{4^n}{\sqrt{\pi}} \, n^{-3/2}.
+    \]
+    Because the subexponential factor \(n^{-3/2}\) is not polynomial, the sequence \((C_n)\) cannot be \(C\)-finite, and its generating function \(C(z)\) is irrational.
+\end{example}
+
+\begin{example}[A polylogarithmic series]
+    Consider the generating function \(F(z) = \sum_{n \ge 1} \frac{z^n}{n^5}\), whose coefficient sequence is \(f_n = n^{-5}\).
+    If \((f_n)\) were \(C\)-finite with exponential growth \(1\), its terms would asymptotically be given by a polynomial in \(n\) (or a periodic sum of polynomials).
+    Since \(n^{-5}\) decays to zero algebraically, it cannot be produced by any linear recurrence with constant coefficients.
+    Thus \((f_n)\) is not \(C\)-finite, and \(F(z)\) is irrational.
+\end{example}
+
+\begin{example}[The sequence of prime numbers]
+    Let \(p_n\) denote the \(n\)-th prime number.
+    By the Prime Number Theorem, \(p_n \sim n \ln n\).
+    The logarithmic factor \(\ln n\) cannot appear in the asymptotic expansion of any \(C\)-finite sequence.
+    Therefore, the sequence of primes \((p_n)_{n \ge 1}\) is not \(C\)-finite.
+\end{example}
+
+\begin{remark}[Computer algebra implementations]
+    Automated asymptotic analysis for combinatorial structures and rational generating functions is supported in computer algebra systems, such as SageMath packages for combinatorial species and rational asymptotics.
+\end{remark}
+
+
+\section*{Transfer theorems for algebraic and \texorpdfstring{\(D\)}{D}-finite functions}
+
+To analyze generating functions beyond the rational realm, we require tools to transfer local singular expansions into coefficient asymptotics.
+Near a dominant singularity \(z = \rho\), different classes of functions exhibit distinct singular behaviors:
+
+\begin{itemize}
+    \item \textbf{Meromorphic functions} (Laurent expansions):
+    Near a pole of order \(k \in \mathbb{N}_{\ge 1}\),
+    \[
+        C \left( 1 - \frac{z}{\rho} \right)^{-k} \implies [z^n] \sim \frac{C}{(k-1)!} \, \rho^{-n} n^{k-1}.
+    \]
+    \item \textbf{Algebraic functions} (Puiseux expansions):
+    Near an algebraic branch point, with \(\alpha \in \mathbb{Q} \setminus \{-1, -2, \dots\}\),
+    \[
+        C \left( 1 - \frac{z}{\rho} \right)^\alpha \implies [z^n] \sim \frac{C}{\Gamma(-\alpha)} \, \rho^{-n} n^{-\alpha - 1}.
+    \]
+    \item \textbf{\(D\)-finite functions} (Logarithmic-Puiseux expansions):
+    Near a regular singular point, with \(\alpha \in \mathbb{Q}\) and \(k \in \mathbb{N}\),
+    \[
+        C \left( 1 - \frac{z}{\rho} \right)^\alpha \ln^k \left( \frac{1}{1 - z/\rho} \right) \implies [z^n] \sim \frac{C}{\Gamma(-\alpha)} \, \rho^{-n} n^{-\alpha - 1} \ln^k n.
+    \]
+\end{itemize}
