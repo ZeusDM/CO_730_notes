@@ -1,0 +1,92 @@
+\lecture{14}{2026-10-09}{Algebraic Power Series}
+
+Given \(P(z, y) = P_d(z) y^d + P_{d-1}(z) y^{d-1} + \cdots + P_0(z) \in \mathbb{Q}[z][y]\) with \(P_d(z) \neq 0\).
+Initial terms \(F(z) = f_0 + f_1 z + f_2 z^2 + \cdots\) of a solution \(y = F(z)\) of \(P(z, y) = 0\) are enough to specify a unique solution \(F(z)\) in \(\mathbb{Q}[[z]]\).
+
+The goal is to find an asymptotic expansion of \((f_n)\).
+How do we do that directly from \(P(z, y)\)?
+
+Recall \(\mathbb{Q}[[z]]\) is the field of formal power series,
+\[
+    \mathbb{Q}((z)) = \left\{ \sum_{n \geq N} a_n z^n : N \in \mathbb{Z}, a_n \in \mathbb{Q} \right\}
+\]
+is the field of formal Laurent series, and
+\[
+    \mathbb{Q}^{\mathrm{fra}}((z)) = \left\{ \sum_{n \geq N} a_n z^{n/R} : N \in \mathbb{Z}, R \in \mathbb{Z}_{>0}, a_n \in \mathbb{Q} \right\}
+\]
+is the field of formal fractional power series.
+
+\begin{theorem}[Puiseux's Theorem]
+    \(\mathbb{Q}^{\mathrm{fra}}((z))\) is the algebraic closure of \(\mathbb{Q}((z))\).
+\end{theorem}
+
+\begin{example}[Non-example]
+    The series \(\sum_{n \geq 1} z^{1/n}\) is not in \(\mathbb{Q}^{\mathrm{fra}}((z))\).
+\end{example}
+
+We say \(F(z)\) is \emph{algebraic} if there exists a non-zero polynomial \(P(z, y) \in \mathbb{Q}[z][y]\) such that \(P(z, F(z)) = 0\).
+A \emph{minimal polynomial} of \(F(z)\) is a polynomial \(P(z, y) \in \mathbb{Q}[z][y]\) such that \(P(z, F(z)) = 0\) and \(\deg_y P\) is minimal among all such polynomials.
+The other Puiseux series solutions of \(P(z, y) = 0\) are called \emph{conjugates} of \(F(z)\).
+
+There is an algorithm (Newton-Puiseux algorithm) to find the Puiseux series solutions of \(P(z, y) = 0\).
+
+\begin{example}
+    Consider
+    \[
+        P(z, y) = zy^2 - y + 1.
+    \]
+    Puiseux's Theorem implies that there exist solutions of the form
+    \[
+        F(z) = a_r z^r + \cdots
+    \]
+    for some \(r \in \mathbb{Q}\) and \(a_r \neq 0\), where \(\cdots\) denotes higher order terms in \(z\).
+    Plugging this into \(P(z, F(z)) = 0\) gives
+    \[
+        z(a_r z^r + \cdots)^2 - (a_r z^r + \cdots) + 1 = 0.
+    \]
+    Let's compare the lowest order terms above.
+    The lowest order terms of each summand are \(a_r^2 z^{2r + 1}\), \(-a_r z^r\), and \(1\), respectively.
+    Since they must sum to zero, at least two of them must have the same order.
+    \begin{description}
+        \item[\boldmath If \(2r + 1 = r \leq 0\),] then \(r = -1\) and \(a_r^2 - a_r = 0\), so \(a_r = 1\).
+        \item[\boldmath If \(2r + 1 = 0 \leq r\),] then \(r = -\frac{1}{2}\), however \(0 \not\leq -\frac{1}{2}\), so this case is impossible.
+        \item[\boldmath If \(r = 0 \leq 2r + 1\),] then \(r = 0\) and \(-a_r + 1 = 0\), so \(a_r = 1\).
+    \end{description}
+    Two plausible roots
+    \[
+        f_1(z) = 1 + \cdots, \quad f_2(z) = z^{-1} + \cdots.
+    \]
+    To find more terms, make a substitution and do this again.
+    For example, write \(f_1(z) = 1 + z g(z)\), where the lowest order term of \(g(z)\) is of order \(> -1\).
+    Then \(g(z)\) is a solution of
+    \[
+        Q(z, y) = P(z, 1 + z y) = z^2 y^2 + z y.
+    \]
+    We can now apply the same method to find the lowest order term of \(g(z)\).
+\end{example}
+
+A student asked if this is how it's computed in practice.
+This is particularly slow.
+You can use it to figure out enough lowest terms to separate the roots, then you can use Newton's method to find the rest of the terms in a more efficient way.
+
+The summary of the Newton's method is as follows.
+Suppose \(F(0) = 0\), so that \(P(0, 0) = 0\), and suppose \(P_y(0, 0) \neq 0\).
+Define \(F_0(z) = 0\) and
+\[
+    F_{n+1}(z) = F_n(z) - \frac{P(z, F_n(z))}{P_y(z, F_n(z))} \mod z^{2^{n+1}}
+\]
+Then, \(F_{n+1}(z)\) agrees with \(F_n(z)\) up to order \(2^{n+1}\).
+
+Let \(P(z, y) \in \mathbb{Z}[z, y]\) (scale if needed to make it integral) and suppose \(f(z) = \sum_{n \geq N} c_n z^{n/R}\) satisfies \(P(z, f(z)) = 0\).
+
+The \emph{singular part} of \(f\) is the initial partial sum
+\[
+    f_\ell(z) = \sum_{n = N}^{\ell} c_n z^{n/R}
+\]
+where \(\ell \geq N\) is the minimum integer such that \(f_\ell(z)\) is not equal to the initial partial sum of any other root of \(P(z, y) = 0\).
+
+The \emph{separation order} of \(f\) with respect to \(P\) is \(\ell\).
+
+\begin{proposition}
+    Let \(P(z, y) \in \mathbb{Z}[z, y]\) be irreducible in \(y\) 
+\end{proposition}

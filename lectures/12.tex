@@ -1,1 +1,79 @@
-\lecture{12}{2026-10-05}{Something something transfer theorems}
+\lecture{12}{2026-10-05}{Darboux's theorem and algebraic asymptotics}
+
+In the previous lecture, we introduced slit disks, algebraic branch points, and the Gamma function, stating the basic asymptotic relation
+\[
+    [z^n] (1 - z)^{-\alpha} \sim \frac{n^{\alpha - 1}}{\Gamma(\alpha)} \qquad (\alpha \in \mathbb{C} \setminus \mathbb{Z}_{\le 0}).
+\]
+Today, following \cite[Section 2.3]{Melczer2021}, we establish Darboux's Theorem, which transfers a convergent Puiseux series expansion of an algebraic (or locally algebraic) generating function at its dominant singularities into an asymptotic expansion for its coefficients.
+
+
+\section*{Transferring Puiseux expansions}
+
+Recall from \cite[Definition 2.12]{Melczer2021} that for a singularity \(\omega \in \mathbb{C} \setminus \{0\}\), we define the ray
+\[
+    R_\omega = \{ t\omega : t \ge 1 \}.
+\]
+Every algebraic function analytic at the origin admits a convergent Puiseux expansion in a disk centered at each dominant singularity \(\omega\) with the ray \(R_\omega\) removed.
+
+\begin{proposition}[Darboux's Theorem, {\cite[Proposition 2.11]{Melczer2021}}]
+    \label{prop:darboux}
+    Suppose \(F(z) = \sum_{n \ge 0} f_n z^n\) is analytic in an open disk around the origin except for a single dominant singularity \(\omega \in \mathbb{C} \setminus \{0\}\) and points on the ray \(R_\omega = \{t\omega : t \ge 1\}\), such that
+    \[
+        F(z) = \sum_{k \ge N} c_k \left( 1 - \frac{z}{\omega} \right)^{k/R}
+    \]
+    is a convergent expansion of \(F\) in a disk centered at \(\omega\) with \(R_\omega\) removed, for some \(R \in \mathbb{Z}_{\ge 1}\) and \(N \in \mathbb{Z}\).
+    Then each summand with \(k/R \notin \mathbb{N}\) contributes
+    \[
+        c_k \omega^{-n} \frac{\Gamma(n - k/R)}{\Gamma(-k/R) \Gamma(n+1)} \sim c_k \omega^{-n} \frac{n^{-k/R - 1}}{\Gamma(-k/R)}
+    \]
+    to \(f_n\). In particular, for any \(M \ge 0\),
+    \[
+        f_n = \frac{\omega^{-n}}{\Gamma(n+1)} \sum_{k=N}^{N+M} c_k \frac{\Gamma(n - k/R)}{\Gamma(-k/R)} + O\left( \omega^{-n} n^{-(N+M+1)/R - 1} \right),
+    \]
+    where \(\frac{\Gamma(n - k/R)}{\Gamma(-k/R)} = 0\) when \(k/R \in \mathbb{N}\).
+    If \(p\) is the smallest index such that \(c_p \neq 0\) and \(p/R \notin \mathbb{N}\), then
+    \[
+        f_n \sim c_p \omega^{-n} \frac{n^{-p/R - 1}}{\Gamma(-p/R)}.
+    \]
+    If there are finitely many dominant singularities satisfying these hypotheses, the asymptotics of \(f_n\) are given by the sum of their individual contributions.
+\end{proposition}
+
+\begin{proof}[Proof idea]
+    By Cauchy's integral formula,
+    \[
+        f_n = [z^n] F(z) = \frac{1}{2\pi i} \oint_{\mathcal{C}} F(z) z^{-n-1} \, dz.
+    \]
+    We deform the circular contour \(\mathcal{C}\) into a Hankel-type contour wrapped around the ray \(R_\omega\).
+    Making the scaling substitution \(z = \omega(1 + t/n)\), the factor \(z^{-n-1}\) becomes \(\omega^{-n-1} e^{-t}\), and each term \((1 - z/\omega)^{k/R}\) scales as \(n^{-k/R} (-t)^{k/R}\).
+    Evaluating the resulting integral using Hankel's formula for the Gamma function yields the stated asymptotic expansion.
+\end{proof}
+
+
+\section*{Asymptotic consequences for algebraic functions}
+
+Because every branch of an algebraic equation has a convergent Puiseux series at each singularity, \Cref{prop:darboux} completely characterizes the asymptotic growth of algebraic generating functions.
+
+\begin{corollary}[{\cite[Corollary 2.1]{Melczer2021}}]
+    \label{cor:algebraic-asymptotics}
+    Let \(F(z) = \sum_{n \ge 0} f_n z^n\) be a branch of an algebraic equation which is analytic at the origin and has dominant singularities \(\omega_0 \beta, \dots, \omega_{m-1}\beta\) with \(\beta > 0\) and \(|\omega_j| = 1\). Then
+    \[
+        f_n = \frac{\beta^{-n} n^s}{\Gamma(s+1)} \sum_{j=0}^{m-1} C_j \omega_j^{-n} + O\left( \beta^{-n} n^t \right),
+    \]
+    where \(s \in \mathbb{Q} \setminus \{-1, -2, \dots\}\), \(t < s\), and \(\beta, \omega_j, C_j\) are algebraic numbers.
+\end{corollary}
+
+\begin{example}[2-regular simple graphs, {\cite[Example 2.13]{Melczer2021}}]
+    Let \(g_n\) denote the number of 2-regular simple graphs on \(n\) labeled vertices.
+    Its exponential generating function is
+    \[
+        F(z) = \sum_{n \ge 0} \frac{g_n}{n!} z^n = \frac{e^{-z/2 - z^2/4}}{\sqrt{1-z}}.
+    \]
+    Here \(F(z)\) has a unique dominant singularity at \(z = 1\), with local expansion
+    \[
+        F(z) = e^{-3/4} (1-z)^{-1/2} + O\left( (1-z)^{1/2} \right).
+    \]
+    Applying \Cref{prop:darboux} with \(\omega = 1\), \(R = 2\), and leading term \(-p/R = 1/2\) gives
+    \[
+        \frac{g_n}{n!} \sim e^{-3/4} \frac{n^{-1/2}}{\Gamma(1/2)} = \frac{e^{-3/4}}{\sqrt{\pi n}}.
+    \]
+\end{example}

@@ -1,6 +1,6 @@
 \lecture{13}{2026-10-07}{More transfer theorems}
 
-\begin{proposition}
+\begin{proposition}[{\cite[Proposition 2.17]{Melczer2021}}]
     If
     \[
         F(z) = (1-z)^{-\alpha} \left( \log \frac{1}{1-z} \right)^\beta
@@ -15,19 +15,22 @@
     \]
 \end{proposition}
 
-\begin{proof}[Idea]
+\begin{proof}[Proof idea]
+    We write the Cauchy integral with the substitution \(z = 1 + t/n\):
     \[
-        F(1 + t/n)(1+ t/n)^{-n-1} \approx (e^{-t}) (-t)^\alpha (\log n)^\beta \left( 1 - \frac{\beta \log(-t)}{\log n} + \cdots \right)
+        F(1 + t/n)(1 + t/n)^{-n-1} \approx e^{-t} (-t)^{-\alpha} (\log n)^\beta \left( 1 - \frac{\beta \log(-t)}{\log n} + \cdots \right),
     \]
-    and
+    and evaluate along a Hankel contour \(\gamma\) using
     \begin{align*}
-        \frac{1}{2\pi i} \int_{\gamma} (e^{-t}) (-t)^s \log(-t)^k\, dt
-        &= (-1)^k \frac{d^k}{ds^k} \frac{1}{2\pi i} \int_{\gamma} (-t)^s e^{-t}\, dt \\
+        \frac{1}{2\pi i} \int_{\gamma} e^{-t} (-t)^s \log^k(-t) \, dt
+        &= (-1)^k \frac{d^k}{ds^k} \left( \frac{1}{2\pi i} \int_{\gamma} (-t)^s e^{-t} \, dt \right) \\
         &= (-1)^k \frac{d^k}{ds^k} \frac{1}{\Gamma(s)}.
     \end{align*}
 \end{proof}
 
-Note: what if \(\alpha \in \mathbb{Z}_{\le 0}\) and \(\beta \in \mathbb{Z}_{\ge 0}\)? Then we can use induction and differentiate.
+\begin{remark}[{\cite[Remark 2.4]{Melczer2021}}]
+    If \(\alpha \in \mathbb{Z}_{\le 0}\) and \(\beta \in \mathbb{Z}_{\ge 0}\), the Gamma pole is avoided by differentiating \(\log \frac{1}{1-z}\) directly.
+\end{remark}
 
 \begin{example}
     \[
@@ -37,20 +40,20 @@ Note: what if \(\alpha \in \mathbb{Z}_{\le 0}\) and \(\beta \in \mathbb{Z}_{\ge 
 
 \begin{example}
     \[
-    [z^n] (1-z)^m \log\left(\frac{1}{1-z}\right) = (-1)^m \frac{m!}{n(n-1)\cdots(n-m)}.
+        [z^n] (1-z)^m \log\left(\frac{1}{1-z}\right) = (-1)^m \frac{m!}{n(n-1)\cdots(n-m)}.
     \]
 \end{example}
 
-\section*{Transfers} % I though we were already doing transfer theorems?
+\section*{Transfers}
 
 If \(R > 0\) and \(\epsilon \in (0, \pi/2)\), then the \emph{\(\Delta\)-domain} is defined as
 \[
-    \Delta(R, \epsilon) = \{ z \in \mathbb{C} : |z| < R + \epsilon \text{ and } z \neq R \text{ and } |z-R| \geq \pi/2 - \epsilon \}.
+    \Delta(R, \epsilon) = \{ z \in \mathbb{C} : |z| < R + \epsilon, \, z \neq R, \text{ and } |\operatorname{Arg}(z-R)| \ge \pi/2 - \epsilon \}.
 \]
 
 Since \([z^n] F(\rho z) = \rho^{n} [z^n] F(z)\), we can assume \(R = 1\) without loss of generality.
 
-\begin{theorem}[Transfer theorem, {\cite[Theorem VI.3, Corollary VI.1]{FlajoletSedgewick2009}, \cite[Proposition 2.17]{Melczer2021}}]
+\begin{theorem}[Transfer theorem, {\cite[Proposition 2.17]{Melczer2021}, \cite[Theorem VI.3, Corollary VI.1]{FlajoletSedgewick2009}}]
     Let \(F(z) = \sum_{n \ge 0} f_n z^n\) be analytic in a \(\Delta\)-domain \(\Delta(1, \epsilon)\) for some \(\epsilon > 0\) and suppose that
     \[
         G(z) = (1-z)^{-\alpha} \left( \log \frac{1}{1-z} \right)^\beta = \sum_{n \ge 0} g_n z^n.
@@ -63,33 +66,28 @@ Since \([z^n] F(\rho z) = \rho^{n} [z^n] F(z)\), we can assume \(R = 1\) without
     \end{itemize}
 \end{theorem}
 
-Steve proved this theorem, but I couldn't follow it.
+\begin{remark}
+    The proof proceeds by deforming the Cauchy contour to the boundary of the \(\Delta\)-domain and evaluating the integrals along the rectilinear and circular segments.
+\end{remark}
 
 \begin{example}
-    Take
+    Consider the generating function for Catalan numbers:
     \[
         F(z) = \frac{1 - \sqrt{1 - 4z}}{2z} = \sum_{n \ge 0} C_n z^n.
     \]
-    Then, there is a single singularity at \(z = 1/4\) and the expansion is
+    The dominant singularity is at \(z = 1/4\).
+    Expanding locally around \(z = 1/4\) gives
     \[
         F(z) = 2 - 4\left(\frac{1}{4} - z\right)^{1/2} + 8\left(\frac{1}{4} - z\right) - 16\left(\frac{1}{4} - z\right)^{3/2} + O\left(\left(\frac{1}{4} - z\right)^2\right).
     \]
-
-    We can find asymptotics of each term.
-    \[
-    [z^n] \left(\frac{1}{4} - z\right)^{1/2} = \frac{4^n}{2} \frac{n^{-3/2}}{\Gamma(-1/2)} \left( 1 + \frac{(-1/2)(-3/2)}{n} + \cdots \right).
-    \]
-    Same for \([z^n] \left(\frac{1}{4} - z\right)^{3/2}\):
-    \[
-        [z^n] \left(\frac{1}{4} - z\right)^{3/2} = \frac{4^n}{2} \frac{n^{-5/2}}{\Gamma(-3/2)} \left( 1 + \frac{(-3/2)(-5/2)}{n} + \cdots \right).
-    \]
-    and for the error term, we have
-    \[
-        [z^n] O\left(\left(\frac{1}{4} - z\right)^2\right) = O\left(4^n n^{-3}\right).
-    \]
-
+    Applying the transfer theorem term by term:
+    \begin{align*}
+        [z^n] \left(\frac{1}{4} - z\right)^{1/2} &= \frac{4^n}{2} \frac{n^{-3/2}}{\Gamma(-1/2)} \left( 1 + \frac{(-1/2)(-3/2)}{n} + O\left(\frac{1}{n^2}\right) \right), \\
+        [z^n] \left(\frac{1}{4} - z\right)^{3/2} &= \frac{4^n}{2} \frac{n^{-5/2}}{\Gamma(-3/2)} \left( 1 + \frac{(-3/2)(-5/2)}{n} + O\left(\frac{1}{n^2}\right) \right), \\
+        [z^n] O\left(\left(\frac{1}{4} - z\right)^2\right) &= O\left(4^n n^{-3}\right).
+    \end{align*}
     Therefore,
     \[
-        \frac{1}{n+1} \binom{2n}{n} = C_n = \frac{4^n}{\sqrt{\pi n^3}} \left( 1 - \frac{9}{8n} + O\left(\frac{1}{n^2}\right) \right).
+        C_n = \frac{1}{n+1} \binom{2n}{n} = \frac{4^n}{\sqrt{\pi n^3}} \left( 1 - \frac{9}{8n} + O\left(\frac{1}{n^2}\right) \right).
     \]
 \end{example}
