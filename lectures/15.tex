@@ -1,0 +1,67 @@
+\lecture{15}{2026-10-19}{Algebraic Generating Functions}
+
+Suppose \(F(z)\) is an algebraic generating function satisfying \(P(z, F(z)) = 0\), where
+\[
+    P(z, y) = P_d(z) y^d + P_{d-1}(z) y^{d-1} + \cdots + P_0(z) \in \mathbb{Q}[z][y]
+\]
+with \(P_d(z) \neq 0\).
+Using transfer theorems, Puiseux expansions, and the Newton--Puiseux method, we want to determine the asymptotic behaviour of the coefficients of \(F(z)\).
+This raises two main questions:
+\begin{itemize}
+    \item Where are the singularities of the branches of \(P(z, y) = 0\)?
+    \item How do we find the singularities and local expansions of our generating function \(F(z)\) (rather than one of its conjugates)?
+\end{itemize}
+
+\section*{Singularities of algebraic branches}
+
+To address the first question, fix \(z = a \in \mathbb{C}\).
+When are all solutions \(y(z)\) of \(P(z, y) = 0\) analytic around \(z = a\)?
+
+By the implicit function theorem, if \(P(a, y)\) has \(d\) \emph{distinct} roots in \(y\), then all \(d\) branches are analytic around \(z = a\) \cite[Section 2.3, p.~46]{Melczer2021}.
+This condition can fail in two ways:
+\begin{enumerate}[label=\Alph*.]
+    \item If \(P(a, y)\) has degree less than \(d\) in \(y\), which happens when \(P_d(a) = 0\). In this case, we say that a branch escapes to infinity.
+    \item If \(P(a, y)\) has a multiple root in \(y\), which happens when \(P(a, y)\) and \(P_y(a, y)\) share a common root. In this case, we say that two or more branches collide.
+\end{enumerate}
+
+\begin{definition}[Resultant, {\cite[Definition 2.14, Problem 2.14]{Melczer2021}}]
+    A tool to detect common roots between two polynomials \(f(y)\) and \(g(y)\) is the \emph{resultant} \(\operatorname{Res}(f, g)\), defined by
+    \[
+        \operatorname{Res}(f, g) = c_f^{\deg g} c_g^{\deg f} \prod_{\alpha, \beta} (\alpha - \beta),
+    \]
+    where \(c_f\) and \(c_g\) are the leading coefficients of \(f\) and \(g\), and the product is taken over all roots \(\alpha\) of \(f\) and \(\beta\) of \(g\) (counted with multiplicity).
+    Equivalently, \(\operatorname{Res}(f, g)\) can be computed as the determinant of the \emph{Sylvester matrix} of \(f\) and \(g\), which is a \((\deg f + \deg g) \times (\deg f + \deg g)\) matrix whose entries are the coefficients of \(f\) and \(g\).
+\end{definition}
+
+In particular, \(f\) and \(g\) have a common root if and only if \(\operatorname{Res}(f, g) = 0\).
+
+\begin{lemma}[{\cite[Definition 2.15, Lemma 2.2]{Melczer2021}}]
+    If a branch of \(P(z, y) = 0\) has a singularity at \(z = a\), then
+    \[
+        P_d(a) = 0 \quad \text{or} \quad \operatorname{Res}_y(P, P_y)(a) = 0.
+    \]
+    In particular, when \(P \in \mathbb{Q}[z, y]\), only algebraic numbers can appear as singularities of algebraic generating functions.
+\end{lemma}
+
+\begin{corollary}[{\cite[Corollary 2.1]{Melczer2021}}]
+    Let \(F(z) = \sum_{n \geq 0} f_n z^n\) be an algebraic series analytic at the origin, with dominant singularities \(\omega_0\beta, \ldots, \omega_{m-1}\beta\) where \(\beta \in \mathbb{R}_{>0}\) and \(|\omega_j| = 1\) for all \(j\). Then
+    \[
+        f_n = \frac{\beta^{-n} n^s}{\Gamma(s + 1)} \sum_{j = 0}^{m - 1} c_j \omega_j^{-n} + O\left(\beta^{-n} n^{t}\right),
+    \]
+    where \(s \in \mathbb{Q} \setminus \{-1, -2, \ldots\}\), \(t < s\), and \(\beta, \omega_j, c_j\) are algebraic numbers.
+\end{corollary}
+
+\begin{example}[{\cite[Example 2.14]{Melczer2021}}]
+    The algebraic generating function
+    \[
+        F(z) = (1-4z)^{-1/2}
+    \]
+    has coefficient sequence
+    \[
+        [z^n] F(z) = \binom{2n}{n} \sim \frac{4^n}{\sqrt{\pi n}}.
+    \]
+    Thus, the series \(A(z) = \sum_{n \geq 0} \binom{2n}{n}^2 z^n\) is transcendental, since
+    \[
+        [z^n] A(z) = \binom{2n}{n}^2 \sim \frac{16^n}{\pi n}.
+    \]
+\end{example}
